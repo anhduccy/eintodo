@@ -74,7 +74,9 @@ struct HomeView: View {
             }
             ToolbarItem{
                 Button(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden"){
-                    global.showCompletedToDos.toggle()
+                    withAnimation{
+                        global.showCompletedToDos.toggle()
+                    }
                 }
             }
         }

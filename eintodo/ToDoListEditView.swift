@@ -60,7 +60,9 @@ struct ToDoListEditView: View{
             LazyVGrid(columns: colorsGrid){
                 ForEach(0..<ToDoList.Colors.allCases.count, id: \.self){ c in
                     Button(action: {
-                        model.color = ToDoList.Colors(rawValue: c)!
+                        withAnimation{
+                            model.color = ToDoList.Colors(rawValue: c)!
+                        }
                     }, label: {
                         ZStack{
                             Circle().foregroundColor(ToDoList.Colors(rawValue: c)?.color)

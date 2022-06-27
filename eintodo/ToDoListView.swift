@@ -178,11 +178,11 @@ struct ToDoItemRow: View{
                 Button(action: {
                     $todo.completed.wrappedValue.toggle()
                 }, label: {
-                    Image(systemName: todo.completed ? "checkmark.square.fill" : "square")
+                    Image(systemName: todo.completed ? "checkmark.circle.fill" : "circle")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 20)
-                        .foregroundColor(todo.completed ? .blue : .gray)
+                        .frame(width: 22.5)
+                        .foregroundColor(todo.completed ? (type == .list ? global.selectedList.color.color : .blue) : .gray)
                         .opacity(todo.completed ? 1 : 0.75)
                 }).buttonStyle(.plain)
                 //Text
