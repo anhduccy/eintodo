@@ -54,7 +54,6 @@ extension Date{
         let df = DateFormatter()
         df.dateFormat = "y-M-d HH:mm"
         let date = df.date(from: dateStr + " " + timeStr!)
-        print(date ?? "error")
         return date ?? inputDate
     }
 }
