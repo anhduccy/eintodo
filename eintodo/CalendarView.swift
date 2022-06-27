@@ -43,31 +43,31 @@ struct CalendarView: View{
                         Text(weekday).bold()
                     }
                     ForEach(CalendarDate().getDaysOfMonth(selectedMonth: selectedMonth), id: \.self){ dayValue in
-                        if dayValue?.day == nil{
+                        if dayValue.day == -1{
                             Text("")
                         } else {
                             Button(action: {
-                                global.selectedDate = dayValue?.date ?? Date()
+                                global.selectedDate = dayValue.date
                             }, label: {
                                 //If selected date
-                                if(Date().isSameDay(date1: dayValue!.date, date2: global.selectedDate)){
+                                if(Date().isSameDay(date1: dayValue.date, date2: global.selectedDate)){
                                     ZStack{
                                         Circle().fill(.blue)
                                             .frame(width: 30, height: 30)
-                                        Text("\(dayValue!.day)")
+                                        Text("\(dayValue.day)")
                                             .fontWeight(.regular)
                                             .font(.headline)
                                             .foregroundColor(.white)
                                     }
                                 } else {
                                     ZStack{
-                                        Circle().fill(dayValue!.hasItems ? .blue : .clear)
+                                        Circle().fill(dayValue.hasItems ? .blue : .clear)
                                             .opacity(0.1)
                                             .frame(width: 30, height: 30)
-                                        Text("\(dayValue!.day)")
-                                            .fontWeight(Date().isSameDay(date1: Date(), date2: dayValue!.date) ? .regular : .light)
+                                        Text("\(dayValue.day)")
+                                            .fontWeight(Date().isSameDay(date1: Date(), date2: dayValue.date) ? .regular : .light)
                                              .font(.headline)
-                                            .foregroundColor(Date().isSameDay(date1: Date(), date2: dayValue!.date) ? .blue : .primary) //If today -> blue, else -> default
+                                            .foregroundColor(Date().isSameDay(date1: Date(), date2: dayValue.date) ? .blue : .primary) //If today -> blue, else -> default
                                     }
                                 }
                             }).buttonStyle(.plain)
@@ -116,6 +116,7 @@ struct CalendarView: View{
                     Spacer()
                     Button("Heute"){
                         global.selectedDate = Date()
+                        selectedMonth = CalendarDate().getCurrentMonth()
                     }.buttonStyle(.plain)
                         .foregroundColor(.blue)
                 }
@@ -169,12 +170,12 @@ class CalendarDate{
     }
 
     //Get all days of each month
-    func getDaysOfMonth(selectedMonth: Int?)->[DateValue?]{
-        var month: [DateValue?] = []
+    func getDaysOfMonth(selectedMonth: Int?)->[DateValue]{
+        var month: [DateValue] = []
         let date = getDateFromComponents(month: selectedMonth)
         let firstWeekday = calendar.component(.weekday, from: startOfMonth(date: date))+7
         for _ in 0...firstWeekday-3{
-            month.append(nil)
+            month.append(DateValue(day: -1, date: Date.isNotActive, hasItems: false))
         }
         let range = calendar.range(of: .day, in: .month, for: date)!
         for i in range{

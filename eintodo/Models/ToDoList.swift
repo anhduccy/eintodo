@@ -19,21 +19,25 @@ class ToDoList: Object, ObjectKeyIdentifiable{
     @Persisted var todos: RealmSwift.List<ToDo>
     
     enum Colors: Int, PersistableEnum{
-        case pink, red, orange, yellow, green, cyan, blue, indigo, purple, brown, gray
+        case pink, red, orange, yellow, green, mint, cyan, teal, blue, indigo, purple, brown, gray, black
         
         var color: Color{
+            
             switch self{
             case .pink: return .pink
             case .red: return .red
             case .orange: return .orange
             case .yellow: return .yellow
             case .green: return .green
+            case .mint: return .mint
+            case .teal: return .teal
             case .cyan: return .cyan
             case .blue: return .blue
             case .indigo: return .indigo
             case .purple: return .purple
             case .brown: return .brown
             case .gray: return .gray
+            case .black: return .black
             }
         }
     }

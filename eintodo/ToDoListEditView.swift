@@ -31,7 +31,8 @@ struct ToDoListEditView: View{
     let type: EditViewType
     @StateObject var model: ToDoListModel
     
-    let grid: [GridItem] = Array(repeating: .init(.fixed(30)), count: 11)
+    let symbolsGrid: [GridItem] = Array(repeating: .init(.fixed(30)), count: 10)
+    let colorsGrid: [GridItem] = Array(repeating: .init(.fixed(40)), count: 7)
     
     var body: some View{
         VStack{
@@ -55,21 +56,28 @@ struct ToDoListEditView: View{
             }
             
             Spacer()
-            
             //List color
-            LazyHStack{
+            LazyVGrid(columns: colorsGrid){
                 ForEach(0..<ToDoList.Colors.allCases.count, id: \.self){ c in
                     Button(action: {
                         model.color = ToDoList.Colors(rawValue: c)!
                     }, label: {
-                        Circle().foregroundColor(ToDoList.Colors(rawValue: c)?.color)
-                            .frame(width: model.color.color == ToDoList.Colors(rawValue: c)?.color ?? .blue ? 35 : 30, height: model.color.color == ToDoList.Colors(rawValue: c)?.color ?? .blue ? 35 : 30)
+                        ZStack{
+                            Circle().foregroundColor(ToDoList.Colors(rawValue: c)?.color)
+                                .frame(width: 35, height: 35)
+                            if model.color.color == ToDoList.Colors(rawValue: c)?.color{
+                                Image(systemName: "circle.fill")
+                                    .foregroundColor(.white)
+                            }
+                        }
                     }).buttonStyle(.plain)
                 }
-            }.frame(height: 35)
+            }
+            
+            Spacer()
             
             //List symbol
-            LazyVGrid(columns: grid){
+            LazyVGrid(columns: symbolsGrid){
                 ForEach(SymbolCatalog().s, id: \.self){ symbol in
                     Button(action: {
                         model.symbol = symbol

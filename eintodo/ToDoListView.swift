@@ -212,18 +212,15 @@ struct ToDoItemRow: View{
                 //Status
                 HStack(alignment: .center, spacing: 2.5){
                     if type != .list && !todo.list.isEmpty {
-                        Image(systemName: todo.list.first!.symbol)
-                            .foregroundColor(todo.list.first!.color.color)
+                        ToDoItemRowSymbol(systemName: todo.list.first!.symbol, color: todo.list.first!.color.color)
                     }
                     if todo.notes != ""{
-                        Image(systemName: "text.alignleft")
-                            .foregroundColor(.gray)
+                        ToDoItemRowSymbol(systemName: "text.alignleft", color: .gray)
                     }
                     Button(action: {
                         ToDo().delete(todo: todo)
                     }, label: {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
+                        ToDoItemRowSymbol(systemName: "trash", color: .red)
                     }).buttonStyle(.plain)
                 }
             }
@@ -231,6 +228,19 @@ struct ToDoItemRow: View{
             .padding(.bottom, 12.5)
             .padding(.leading)
             .padding(.trailing, 10)
+        }
+    }
+}
+
+struct ToDoItemRowSymbol: View{
+    let systemName: String
+    let color: Color
+    var body: some View{
+        ZStack(alignment: .center){
+            Circle().fill(.clear)
+                .frame(width: 20, height: 20)
+            Image(systemName: systemName)
+                .foregroundColor(color)
         }
     }
 }
