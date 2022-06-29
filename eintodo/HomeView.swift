@@ -28,6 +28,9 @@ struct HomeView: View {
                 Section(header: Text("Sortierte Listen")){
                     NavigationLink(tag: 1, selection: $global.selectedView) {
                         ToDoListView(type: .all)
+                            .onAppear{
+                                global.selectedDate = Date()
+                            }
                     } label: {
                         HStack{
                             Label("Alle", systemImage: "tray")
@@ -43,6 +46,7 @@ struct HomeView: View {
                             destination: ToDoListView(type: .list)
                                 .onAppear{
                                     global.selectedList = lists[i]
+                                    global.selectedDate = Date()
                                 },
                             tag: i + 2,
                             selection: $global.selectedView

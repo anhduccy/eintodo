@@ -192,12 +192,11 @@ struct ToDoItemRow: View{
                             Image(systemName: "pin")
                                 .foregroundColor(.red)
                         }
-                        TextField("", text: $title)
+                        TextField("", text: $title, onEditingChanged: { _ in 
+                            $todo.title.wrappedValue = title
+                        })
                             .font(.body.bold())
                             .textFieldStyle(.plain)
-                            .onChange(of: title){ _ in
-                                $todo.title.wrappedValue = title
-                            }
                     }
                     .padding(.bottom, todo.marked || todo.notification != Date.isNotActive || todo.deadline != Date.isNotActive  ? -6 : 0)
 
