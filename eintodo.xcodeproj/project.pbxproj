@@ -108,7 +108,6 @@
 			children = (
 				7964DC50285E026900CB3975 /* ContentView.swift */,
 				798A7FE8286DB35E001139CD /* SettingsView.swift */,
-				791BC506286E2B9700CCA466 /* NotificationCenter.swift */,
 				797AC78D28623721001C80F4 /* HomeView.swift */,
 				797AC78B286232F2001C80F4 /* LoginView.swift */,
 				79714617285E040700596920 /* CalendarView.swift */,
@@ -125,6 +124,7 @@
 				79714628285E130000596920 /* Global.swift */,
 				79714626285E08A700596920 /* ToDo.swift */,
 				798711A8285F174300050034 /* ToDoList.swift */,
+				791BC506286E2B9700CCA466 /* NotificationCenter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
