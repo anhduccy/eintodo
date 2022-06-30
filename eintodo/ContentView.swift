@@ -20,6 +20,7 @@ struct ContentView: View {
             if let user = realmApp.currentUser{
                 HomeView()
                     .environment(\.realmConfiguration, user.configuration(partitionValue: user.id))
+                    .onAppear(perform: NotificationCenter.askForUserNotificationPermission)
             }
         }
     }

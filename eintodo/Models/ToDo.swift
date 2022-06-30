@@ -55,6 +55,12 @@ class ToDo: Object, ObjectKeyIdentifiable{
         try? realmEnv.write{
             let obj = realmEnv.objects(ToDoList.self).filter(NSPredicate(format: "_id == %@", list._id)).first!
             obj.todos.append(model.transferToRealm(todo: ToDo()))
+            if model.deadline != Date.isNotActive{
+                NotificationCenter.updateToDo(title: model.title, id: "\(model._id)", date: model.deadline)
+            }
+            if model.notification != Date.isNotActive{
+                NotificationCenter.updateToDo(title: model.title, id: "\(model._id)", date: model.notification)
+            }
         }
     }
     func update(todo: ObservedRealmObject<ToDo>.Wrapper, model: ToDoModel){
@@ -73,9 +79,20 @@ class ToDo: Object, ObjectKeyIdentifiable{
                 ObservedRealmObject(wrappedValue: list).projectedValue.todos.append(model.transferToRealm(todo: store))
             }
         }
+        if model.deadline != Date.isNotActive{
+            NotificationCenter.updateToDo(title: model.title, id: "\(model._id)", date: model.deadline)
+        } else {
+            NotificationCenter.deleteToDo(id: "\(model._id)")
+        }
+        if model.notification != Date.isNotActive{
+            NotificationCenter.updateToDo(title: model.title, id: "\(model._id)", date: model.notification)
+        } else {
+            NotificationCenter.deleteToDo(id: "\(model._id)")
+        }
     }
     func delete(todo: ToDo){
         try! realmEnv.write{
+            NotificationCenter.deleteToDo(id: "\(todo._id)")
             realmEnv.delete(realmEnv.objects(ToDo.self).filter("_id = %@", todo._id))
         }
     }

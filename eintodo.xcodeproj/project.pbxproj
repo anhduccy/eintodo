@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		791A2F532860F0DE00B307AE /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791A2F522860F0DE00B307AE /* Migrator.swift */; };
+		791BC507286E2B9700CCA466 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791BC506286E2B9700CCA466 /* NotificationCenter.swift */; };
 		7964DC4F285E026900CB3975 /* eintodoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7964DC4E285E026900CB3975 /* eintodoApp.swift */; };
 		7964DC51285E026900CB3975 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7964DC50285E026900CB3975 /* ContentView.swift */; };
 		7964DC53285E026A00CB3975 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7964DC52285E026A00CB3975 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		791A2F522860F0DE00B307AE /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
+		791BC506286E2B9700CCA466 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		7964DC4B285E026900CB3975 /* eintodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eintodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7964DC4E285E026900CB3975 /* eintodoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eintodoApp.swift; sourceTree = "<group>"; };
 		7964DC50285E026900CB3975 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			children = (
 				7964DC50285E026900CB3975 /* ContentView.swift */,
 				798A7FE8286DB35E001139CD /* SettingsView.swift */,
+				791BC506286E2B9700CCA466 /* NotificationCenter.swift */,
 				797AC78D28623721001C80F4 /* HomeView.swift */,
 				797AC78B286232F2001C80F4 /* LoginView.swift */,
 				79714617285E040700596920 /* CalendarView.swift */,
@@ -232,6 +235,7 @@
 				79FAC55D285F9560005E4251 /* ToDoListCollectionRow.swift in Sources */,
 				79714618285E040700596920 /* CalendarView.swift in Sources */,
 				7971461A285E041C00596920 /* ToDoEditView.swift in Sources */,
+				791BC507286E2B9700CCA466 /* NotificationCenter.swift in Sources */,
 				7971461E285E044500596920 /* ViewLibrary.swift in Sources */,
 				797AC78C286232F2001C80F4 /* LoginView.swift in Sources */,
 				7964DC4F285E026900CB3975 /* eintodoApp.swift in Sources */,
