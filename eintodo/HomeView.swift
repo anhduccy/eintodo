@@ -62,8 +62,6 @@ struct HomeView: View {
             try! realmEnv.write{
                 initDefaultList(global: global, lists: $lists)
             }
-            let defaults = UserDefaults.standard
-            defaults.set("15:00", forKey: "deadlineTime")
         }
         .frame(minWidth: 200)
         .toolbar{

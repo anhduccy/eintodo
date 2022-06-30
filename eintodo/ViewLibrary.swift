@@ -55,7 +55,7 @@ struct SystemDatePicker: View{
             Text(title)
             Spacer()
             if date != Date.isNotActive{
-                DatePicker("", selection: $date, displayedComponents: type == "dateAndTime" ? [.date, .hourAndMinute] : [.date])
+                DatePicker("", selection: $date, displayedComponents: displayType())
                     .datePickerStyle(.stepperField)
                     .frame(width: 200)
             } else {
@@ -63,6 +63,15 @@ struct SystemDatePicker: View{
                     .foregroundColor(.gray)
                     .opacity(0.5)
             }
+        }
+    }
+    private func displayType()->DatePickerComponents{
+        if type == "dateAndTime"{
+            return [.date, .hourAndMinute]
+        } else if type == "time" {
+            return [.hourAndMinute]
+        } else {
+            return [.date]
         }
     }
 }

@@ -24,6 +24,7 @@
 		797AC78E28623721001C80F4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797AC78D28623721001C80F4 /* HomeView.swift */; };
 		798711A9285F174300050034 /* ToDoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798711A8285F174300050034 /* ToDoList.swift */; };
 		798711AB285F321800050034 /* ToDoListEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798711AA285F321800050034 /* ToDoListEditView.swift */; };
+		798A7FE9286DB35E001139CD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798A7FE8286DB35E001139CD /* SettingsView.swift */; };
 		79FAC55D285F9560005E4251 /* ToDoListCollectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FAC55C285F9560005E4251 /* ToDoListCollectionRow.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		797AC78D28623721001C80F4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		798711A8285F174300050034 /* ToDoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoList.swift; sourceTree = "<group>"; };
 		798711AA285F321800050034 /* ToDoListEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListEditView.swift; sourceTree = "<group>"; };
+		798A7FE8286DB35E001139CD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		79FAC55C285F9560005E4251 /* ToDoListCollectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListCollectionRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				7964DC50285E026900CB3975 /* ContentView.swift */,
+				798A7FE8286DB35E001139CD /* SettingsView.swift */,
 				797AC78D28623721001C80F4 /* HomeView.swift */,
 				797AC78B286232F2001C80F4 /* LoginView.swift */,
 				79714617285E040700596920 /* CalendarView.swift */,
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				798A7FE9286DB35E001139CD /* SettingsView.swift in Sources */,
 				79714629285E130000596920 /* Global.swift in Sources */,
 				797AC78E28623721001C80F4 /* HomeView.swift in Sources */,
 				798711A9285F174300050034 /* ToDoList.swift in Sources */,

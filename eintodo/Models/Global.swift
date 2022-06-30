@@ -33,8 +33,16 @@ extension Date{
     
     func format(displayType: String = "dateAndTime",date: Date)->String{
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = displayType == "dateAndTime" ? .short : .none
+        if displayType == "date"{
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+        } else if displayType == "time"{
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+        } else {
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+        }
         formatter.locale = Locale(identifier: "de")
         return formatter.string(from: date)
     }

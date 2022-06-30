@@ -13,7 +13,7 @@ import Realm
 
 //Realm Setup
 let realmApp = RealmSwift.App(id: "***REMOVED***")
-let user = realmApp.currentUser!
+let user = realmApp.currentUser! //<- IF NO LOGIN FAIL
 let realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
 
 @main
@@ -36,6 +36,10 @@ struct eintodoApp: SwiftUI.App {
             } else {
                 ResetRealm()
             }
+        }
+        
+        Settings{
+            SettingsView()
         }
     }
 }
