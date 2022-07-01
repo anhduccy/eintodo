@@ -51,7 +51,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
     
     //FUNCTIONS
     ///Add a to-do with a to-do-model layer to a to-do list in Realm/MongoDB and set a user notification if at least one date is activated.
-    func add(list: ToDoList, model: ToDoModel){
+    static func add(list: ToDoList, model: ToDoModel){
         try? realmEnv.write{
             let obj = realmEnv.objects(ToDoList.self).filter(NSPredicate(format: "_id == %@", list._id)).first!
             obj.todos.append(model.transferToRealm(todo: ToDo()))
@@ -64,7 +64,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
         }
     }
     ///Update a to-do with a to-do-model layer in Realm/MongoDB and change the user notification if at least one date is activated
-    func update(todo: ObservedRealmObject<ToDo>.Wrapper, model: ToDoModel){
+    static func update(todo: ObservedRealmObject<ToDo>.Wrapper, model: ToDoModel){
         if todo.wrappedValue.list.first!._id == model.list._id{
             todo.title.wrappedValue = model.title
             todo.notes.wrappedValue = model.notes
@@ -92,7 +92,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
         }
     }
     ///Delete a to-do from Realm/MongoDB
-    func delete(todo: ToDo){
+    static func delete(todo: ToDo){
         try! realmEnv.write{
             NotificationCenter.deleteToDo(id: "\(todo._id)")
             realmEnv.delete(realmEnv.objects(ToDo.self).filter("_id = %@", todo._id))
@@ -101,7 +101,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
 }
 
 ///A model layer between data storage (Realm/MongoDB) and UI for type ToDo
-class ToDoModel: ObservableObject{
+ class ToDoModel: ObservableObject{
     init(){
         _id = ObjectId()
         title = ""
@@ -138,7 +138,7 @@ class ToDoModel: ObservableObject{
     func transferToRealm(todo: ToDo)->ToDo{
         todo.title = title
         todo.notes = notes
-        todo.deadline = Date.createDeadlineTime(inputDate: deadline)
+        todo.deadline = deadline != Date.isNotActive ? Date.createDeadlineTime(inputDate: deadline) : Date.isNotActive
         todo.notification = notification
         todo.marked = marked
         todo.priority = priority

@@ -100,9 +100,9 @@ struct ToDoListEditView: View{
                     Spacer()
                     Button(action: {
                         for todo in list.todos{
-                            ToDo().delete(todo: todo)
+                            ToDo.delete(todo: todo)
                         }
-                        ToDoList().delete(list: list)
+                        ToDoList.delete(list: list)
                         initDefaultList(global: global, lists: $lists)
                         global.selectedList = realmEnv.objects(ToDoList.self).first!
                         global.selectedView = lists.count + 1
@@ -115,10 +115,10 @@ struct ToDoListEditView: View{
                 Spacer()
                 Button("Fertig"){
                     if type == .add{
-                        global.selectedList = ToDoList().add(lists: $lists, model: model)
+                        global.selectedList = ToDoList.add(lists: $lists, model: model)
                         global.selectedView = global.selectedList.sortIndex + 2
                     } else {
-                        ToDoList().update(list: $list, model: model)
+                        ToDoList.update(list: $list, model: model)
                         global.selectedList = list
                     }
                     isPresented.toggle()

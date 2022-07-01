@@ -119,7 +119,7 @@ struct ToDoEditView: View{
                 if type == .edit{
                     Spacer()
                     Button(action: {
-                        ToDo().delete(todo: todo)
+                        ToDo.delete(todo: todo)
                     }, label: {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
@@ -128,9 +128,9 @@ struct ToDoEditView: View{
                 Spacer()
                 Button("Fertig"){
                     if type == .add{
-                        ToDo().add(list: model.list, model: model)
+                        ToDo.add(list: model.list, model: model)
                     } else {
-                        ToDo().update(todo: $todo, model: model)
+                        ToDo.update(todo: $todo, model: model)
                     }
                     isPresented.toggle()
                 }

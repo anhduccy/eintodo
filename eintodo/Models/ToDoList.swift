@@ -44,7 +44,7 @@ class ToDoList: Object, ObjectKeyIdentifiable{
     
     //Functions
     ///Add a to-do-list with a to-do-list-model layer to Realm/MongoDB
-    func add(lists: ObservedResults<ToDoList>, model: ToDoListModel)->ToDoList{
+    static func add(lists: ObservedResults<ToDoList>, model: ToDoListModel)->ToDoList{
         let list = ToDoList()
         list.title = model.title
         list.notes = model.notes
@@ -55,14 +55,14 @@ class ToDoList: Object, ObjectKeyIdentifiable{
         return list
     }
     ///Update a to-do-list with a to-do-list-model layer in Realm/MongoDB
-    func update(list: ObservedRealmObject<ToDoList>.Wrapper, model: ToDoListModel){
+    static func update(list: ObservedRealmObject<ToDoList>.Wrapper, model: ToDoListModel){
         list.title.wrappedValue = model.title
         list.notes.wrappedValue = model.notes
         list.symbol.wrappedValue = model.symbol
         list.color.wrappedValue = model.color
     }
     ///Delete a to-do-list from Realm/MongoDB
-    func delete(list: ToDoList){
+    static func delete(list: ToDoList){
         try! realmEnv.write{
             realmEnv.delete(realmEnv.objects(ToDoList.self).filter(NSPredicate(format: "_id == %@", list._id)))
         }

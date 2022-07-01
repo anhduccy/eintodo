@@ -50,7 +50,7 @@ struct SettingsView: View {
             if model.deadline != Date.isNotActive{
                 model.deadline =  Date.createDeadlineTime(inputDate: todo.deadline.wrappedValue)
             }
-            ToDo().update(todo: todo, model: model)
+            ToDo.update(todo: todo, model: model)
         }
     }
 }

@@ -86,7 +86,10 @@ struct ToDoListView: View {
     private func returnDataSet()->Results<ToDo>{
         let defaultSort = [SortDescriptor(keyPath: \ToDo.completed),
                            SortDescriptor(keyPath: \ToDo.marked, ascending: false),
-                           SortDescriptor(keyPath: \ToDo.deadline)]
+                           SortDescriptor(keyPath: \ToDo.priority, ascending: false),
+                           SortDescriptor(keyPath: \ToDo.deadline),
+                           SortDescriptor(keyPath: \ToDo.title)
+                        ]
         
         let obj = ObservedRealmObject(wrappedValue: global.selectedList)
         let list = obj.wrappedValue
@@ -209,11 +212,14 @@ struct ToDoItemRow: View{
                     if type != .list && !todo.list.isEmpty {
                         ToDoItemRowSymbol(systemName: todo.list.first!.symbol, color: todo.list.first!.color.color)
                     }
+                    if todo.priority != .none{
+                        ToDoItemRowSymbol(systemName: todo.priority.systemName, color: .blue)
+                    }
                     if todo.notes != ""{
                         ToDoItemRowSymbol(systemName: "text.alignleft", color: .gray)
                     }
                     Button(action: {
-                        ToDo().delete(todo: todo)
+                        ToDo.delete(todo: todo)
                     }, label: {
                         ToDoItemRowSymbol(systemName: "trash", color: .red)
                     }).buttonStyle(.plain)

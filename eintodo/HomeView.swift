@@ -88,7 +88,7 @@ struct HomeView: View {
 func initDefaultList(global: Global, lists: ObservedResults<ToDoList>){
     if lists.wrappedValue.isEmpty{
         let model = ToDoListModel(title: "Neue Liste", notes: "Liste, um Erinnerungen hinzuzufügen", symbol: "list.bullet", color: .blue)
-        global.selectedList = ToDoList().add(lists: lists, model: model)
+        global.selectedList = ToDoList.add(lists: lists, model: model)
     } else {
         global.selectedList = lists.wrappedValue.first!
     }

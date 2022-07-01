@@ -123,8 +123,8 @@
 			children = (
 				7964DC50285E026900CB3975 /* ContentView.swift */,
 				798A7FE8286DB35E001139CD /* SettingsView.swift */,
-				797AC78D28623721001C80F4 /* HomeView.swift */,
 				797AC78B286232F2001C80F4 /* LoginView.swift */,
+				797AC78D28623721001C80F4 /* HomeView.swift */,
 				79714617285E040700596920 /* CalendarView.swift */,
 				798711AC285F324800050034 /* ToDo */,
 				798711AD285F325E00050034 /* ToDoList */,
