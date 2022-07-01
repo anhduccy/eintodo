@@ -102,7 +102,7 @@ struct ToDoListView: View {
             case .date:
                 return todos
                     .sorted(by: defaultSort)
-                    .filter(ToDoFilter().withSelectedDateAll(d: global.selectedDate))
+                    .filter(ToDoFilter.withSelectedDateAll(d: global.selectedDate))
             case .list:
                 return list.todos
                     .sorted(by: defaultSort)
@@ -112,15 +112,15 @@ struct ToDoListView: View {
             case .all:
                 return todos
                     .sorted(by: defaultSort)
-                    .filter(ToDoFilter().showNotCompleted())
+                    .filter(ToDoFilter.showNotCompleted())
             case .date:
                 return todos
                     .sorted(by: defaultSort)
-                    .filter(ToDoFilter().withSelectedDate(d: global.selectedDate))
+                    .filter(ToDoFilter.withSelectedDate(d: global.selectedDate))
             case .list:
                 return list.todos
                     .sorted(by: defaultSort)
-                    .filter(ToDoFilter().showNotCompleted())
+                    .filter(ToDoFilter.showNotCompleted())
             }
         }
     }
@@ -130,14 +130,14 @@ struct ToDoListView: View {
         case .all:
             return "Alle"
         case .date:
-            if Date().isSameDay(date1: Date(), date2: global.selectedDate){
+            if Date.isSameDay(date1: Date(), date2: global.selectedDate){
                 return "Heute"
-            } else if Date().isSameDay(date1: Date().addingTimeInterval(60*60*24), date2: global.selectedDate){
+            } else if Date.isSameDay(date1: Date().addingTimeInterval(60*60*24), date2: global.selectedDate){
                 return "Morgen"
-            } else if Date().isSameDay(date1: Date().addingTimeInterval(-60*60*24), date2: global.selectedDate){
+            } else if Date.isSameDay(date1: Date().addingTimeInterval(-60*60*24), date2: global.selectedDate){
                 return "Gestern"
             } else {
-                return Date().format(displayType: "date", date: global.selectedDate)
+                return Date.format(displayType: "date", date: global.selectedDate)
             }
         case .list:
             return global.selectedList.title
@@ -201,10 +201,10 @@ struct ToDoItemRow: View{
                     .padding(.bottom, todo.marked || todo.notification != Date.isNotActive || todo.deadline != Date.isNotActive  ? -6 : 0)
 
                     if(todo.notification != Date.isNotActive){
-                        LeftText(text: Date().format(date: todo.notification)).foregroundColor(.gray)
+                        LeftText(text: Date.format(date: todo.notification)).foregroundColor(.gray)
                     }
                     if(todo.deadline != Date.isNotActive){
-                        LeftText(text: "Fällig am " + Date().format(displayType: "date", date: todo.deadline)).foregroundColor(.gray)
+                        LeftText(text: "Fällig am " + Date.format(displayType: "date", date: todo.deadline)).foregroundColor(.gray)
                     }
                 }
                 Spacer()

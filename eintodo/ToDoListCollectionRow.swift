@@ -21,7 +21,7 @@ struct ToDoListCollectionRow: View{
             Text(list.title)
                 .foregroundColor(viewIndex == global.selectedView ? .white : list.color.color)
             Spacer()
-            Text("\(list.todos.filter(ToDoFilter().showNotCompleted()).count)")
+            Text("\(list.todos.filter(ToDoFilter.showNotCompleted()).count)")
                 .foregroundColor(viewIndex == global.selectedView ? .white : list.color.color)
             if overItem{
                 Button(action: {

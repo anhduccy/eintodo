@@ -24,7 +24,7 @@ class NotificationCenter{
             //Add UserNotification
             let content = UNMutableNotificationContent()
             content.title = title
-            content.subtitle = "Fällig am \(date.format(displayType: "date", date: date))"
+            content.subtitle = "Fällig am \(Date.format(displayType: "date", date: date))"
             content.sound = UNNotificationSound.default
                         
             if(Date.getInterval(from: date) > 0){

@@ -38,7 +38,7 @@ struct SettingsView: View {
             .navigationTitle("Einstellungen")
     }
     private func storeDeadlineTime(){
-        let time = Date().format(displayType: "time", date: deadlineTime)
+        let time = Date.format(displayType: "time", date: deadlineTime)
         let defaults = UserDefaults.standard
         defaults.set(time, forKey: "deadlineTime")
         
@@ -48,7 +48,7 @@ struct SettingsView: View {
             let todo = ObservedRealmObject(wrappedValue: todo2).projectedValue
             let model = ToDoModel().transferToLayer(todo: todo2)
             if model.deadline != Date.isNotActive{
-                model.deadline =  Date().createDeadlineTime(inputDate: todo.deadline.wrappedValue)
+                model.deadline =  Date.createDeadlineTime(inputDate: todo.deadline.wrappedValue)
             }
             ToDo().update(todo: todo, model: model)
         }

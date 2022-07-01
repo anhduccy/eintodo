@@ -8,8 +8,7 @@
 import Foundation
 import RealmSwift
 
-/**This is a To-Do-Model*/
-
+///To-Do-Model for Realm/MongoDB
 class ToDo: Object, ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var title: String
@@ -51,6 +50,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
     }
     
     //FUNCTIONS
+    ///Add a to-do with a to-do-model layer to a to-do list in Realm/MongoDB and set a user notification if at least one date is activated.
     func add(list: ToDoList, model: ToDoModel){
         try? realmEnv.write{
             let obj = realmEnv.objects(ToDoList.self).filter(NSPredicate(format: "_id == %@", list._id)).first!
@@ -63,6 +63,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
             }
         }
     }
+    ///Update a to-do with a to-do-model layer in Realm/MongoDB and change the user notification if at least one date is activated
     func update(todo: ObservedRealmObject<ToDo>.Wrapper, model: ToDoModel){
         if todo.wrappedValue.list.first!._id == model.list._id{
             todo.title.wrappedValue = model.title
@@ -90,6 +91,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
             NotificationCenter.deleteToDo(id: "\(model._id)")
         }
     }
+    ///Delete a to-do from Realm/MongoDB
     func delete(todo: ToDo){
         try! realmEnv.write{
             NotificationCenter.deleteToDo(id: "\(todo._id)")
@@ -98,8 +100,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
     }
 }
 
-
-//Model for exchange bewteen on-device and Realm
+///A model layer between data storage (Realm/MongoDB) and UI for type ToDo
 class ToDoModel: ObservableObject{
     init(){
         _id = ObjectId()
@@ -121,6 +122,7 @@ class ToDoModel: ObservableObject{
     @Published var priority: ToDo.Priotity
     @Published var list: ToDoList
     
+    ///Transfer data from ToDo to ToDoModel (from data storage to UI)
     func transferToLayer(todo: ToDo)->ToDoModel{
         _id = todo._id
         title = todo.title
@@ -132,10 +134,11 @@ class ToDoModel: ObservableObject{
         list = todo.list.first!
         return self
     }
+    ///Transfer data from ToDoModel to ToDo (from UI to data storage)
     func transferToRealm(todo: ToDo)->ToDo{
         todo.title = title
         todo.notes = notes
-        todo.deadline = Date().createDeadlineTime(inputDate: deadline)
+        todo.deadline = Date.createDeadlineTime(inputDate: deadline)
         todo.notification = notification
         todo.marked = marked
         todo.priority = priority

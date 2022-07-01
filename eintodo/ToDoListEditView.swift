@@ -80,7 +80,7 @@ struct ToDoListEditView: View{
             
             //List symbol
             LazyVGrid(columns: symbolsGrid){
-                ForEach(SymbolCatalog().s, id: \.self){ symbol in
+                ForEach(SymbolCatalog.s, id: \.self){ symbol in
                     Button(action: {
                         model.symbol = symbol
                     }, label: {

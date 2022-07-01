@@ -8,7 +8,7 @@
 import SwiftUI
 import RealmSwift
 
-//Realm To-Do-Model
+///To-Do-List-Model for Realm/MongoDB
 class ToDoList: Object, ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var title: String
@@ -43,6 +43,7 @@ class ToDoList: Object, ObjectKeyIdentifiable{
     }
     
     //Functions
+    ///Add a to-do-list with a to-do-list-model layer to Realm/MongoDB
     func add(lists: ObservedResults<ToDoList>, model: ToDoListModel)->ToDoList{
         let list = ToDoList()
         list.title = model.title
@@ -53,12 +54,14 @@ class ToDoList: Object, ObjectKeyIdentifiable{
         lists.append(list)
         return list
     }
+    ///Update a to-do-list with a to-do-list-model layer in Realm/MongoDB
     func update(list: ObservedRealmObject<ToDoList>.Wrapper, model: ToDoListModel){
         list.title.wrappedValue = model.title
         list.notes.wrappedValue = model.notes
         list.symbol.wrappedValue = model.symbol
         list.color.wrappedValue = model.color
     }
+    ///Delete a to-do-list from Realm/MongoDB
     func delete(list: ToDoList){
         try! realmEnv.write{
             realmEnv.delete(realmEnv.objects(ToDoList.self).filter(NSPredicate(format: "_id == %@", list._id)))
@@ -66,7 +69,7 @@ class ToDoList: Object, ObjectKeyIdentifiable{
     }
 }
 
-//Model for exchange bewteen on-device and Realm
+///A model layer between data storage (Realm/MongoDB) and UI for type ToDoList
 class ToDoListModel: ObservableObject{
     init(){
         _id = ObjectId()
@@ -81,6 +84,7 @@ class ToDoListModel: ObservableObject{
     @Published var symbol: String
     @Published var color: ToDoList.Colors
     
+    ///Create the opportunity to initialize a ToDoListModel with its initializier
     convenience init(title: String, notes: String, symbol: String, color: ToDoList.Colors){
         self.init()
         self.title = title
@@ -88,7 +92,7 @@ class ToDoListModel: ObservableObject{
         self.symbol = symbol
         self.color = color
     }
-    
+    ///Transfer data from ToDoList to ToDoListModel (from data storage to UI)
     func transferToLayer(list: ToDoList)->ToDoListModel{
         _id = list._id
         title = list.title
@@ -97,7 +101,7 @@ class ToDoListModel: ObservableObject{
         color = list.color
         return self
     }
-    
+    ///Transfer data from ToDoListModel to ToDoList (from UI to data storage)
     func transferToRealm(list: ToDoList)->ToDoList{
         list.title = title
         list.notes = notes

@@ -35,7 +35,7 @@ struct HomeView: View {
                         HStack{
                             Label("Alle", systemImage: "tray")
                             Spacer()
-                            Text("\(todos.filter(ToDoFilter().showNotCompleted()).count)")
+                            Text("\(todos.filter(ToDoFilter.showNotCompleted()).count)")
                         }
                     }
                 }

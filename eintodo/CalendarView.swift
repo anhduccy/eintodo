@@ -13,7 +13,7 @@ import RealmSwift
 struct CalendarView: View{
     @ObservedResults(ToDo.self) var todos
     @EnvironmentObject var global: Global
-    @State var selectedMonth: Int = CalendarDate().getCurrentMonth()
+    @State var selectedMonth: Int = CalendarDate.getCurrentMonth()
 
     private var grid: [GridItem] = Array(repeating: .init(.flexible(minimum: 30, maximum: 40)), count: 7)
     private var weekdays: [String] = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
@@ -25,10 +25,10 @@ struct CalendarView: View{
             //CalendarView
             VStack{
                 HStack{
-                    Text(CalendarDate().getYear(input: selectedMonth))
+                    Text(CalendarDate.getYear(input: selectedMonth))
                         .fontWeight(.light)
                         .font(.title)
-                    Text(CalendarDate().getMonth(input: selectedMonth)).bold()
+                    Text(CalendarDate.getMonth(input: selectedMonth)).bold()
                         .font(.title)
                     Spacer()
                     MonthButton(systemName: "chevron.left", month: $selectedMonth){
@@ -42,7 +42,7 @@ struct CalendarView: View{
                     ForEach(weekdays, id: \.self){ weekday in
                         Text(weekday).bold()
                     }
-                    ForEach(CalendarDate().getDaysOfMonth(selectedMonth: selectedMonth), id: \.self){ dayValue in
+                    ForEach(CalendarDate.getDaysOfMonth(selectedMonth: selectedMonth), id: \.self){ dayValue in
                         if dayValue.day == -1{
                             Text("")
                         } else {
@@ -50,7 +50,7 @@ struct CalendarView: View{
                                 global.selectedDate = dayValue.date
                             }, label: {
                                 //If selected date
-                                if(Date().isSameDay(date1: dayValue.date, date2: global.selectedDate)){
+                                if(Date.isSameDay(date1: dayValue.date, date2: global.selectedDate)){
                                     ZStack{
                                         Circle().fill(.blue)
                                             .frame(width: 30, height: 30)
@@ -61,13 +61,13 @@ struct CalendarView: View{
                                     }
                                 } else {
                                     ZStack{
-                                        Circle().fill(dayValue.hasItems ? .blue : .clear)
-                                            .opacity(0.1)
+                                        Circle().fill(dayValue.hasItems ? (dayValue.isDateInPast ? .red : .blue) : .clear)
+                                            .opacity(0.15)
                                             .frame(width: 30, height: 30)
                                         Text("\(dayValue.day)")
-                                            .fontWeight(Date().isSameDay(date1: Date(), date2: dayValue.date) ? .regular : .light)
+                                            .fontWeight(Date.isSameDay(date1: Date(), date2: dayValue.date) ? .regular : .light)
                                              .font(.headline)
-                                            .foregroundColor(Date().isSameDay(date1: Date(), date2: dayValue.date) ? .blue : .primary) //If today -> blue, else -> default
+                                            .foregroundColor(Date.isSameDay(date1: Date(), date2: dayValue.date) ? .blue : .primary) //If today -> blue, else -> default
                                     }
                                 }
                             }).buttonStyle(.plain)
@@ -116,7 +116,7 @@ struct CalendarView: View{
                     Spacer()
                     Button("Heute"){
                         global.selectedDate = Date()
-                        selectedMonth = CalendarDate().getCurrentMonth()
+                        selectedMonth = CalendarDate.getCurrentMonth()
                     }.buttonStyle(.plain)
                         .foregroundColor(.blue)
                 }
@@ -131,37 +131,39 @@ struct CalendarView: View{
 
 
 class CalendarDate{
+    ///Model of each Calendar Button in CalendarView
     struct DateValue: Hashable{
         let id = UUID().uuidString
         var day: Int
         var date: Date
+        var isDateInPast: Bool
         var hasItems: Bool
     }
     
-    let calendar = Calendar.current
+    static let calendar = Calendar.current
     
-    //Get current year as an int value
-    func getCurrentYear(date: Date = Date())->Int{
+    ///Return the current year as an int value
+    static func getCurrentYear(date: Date = Date())->Int{
         let components = calendar.dateComponents([.year], from: date)
         return components.year!
     }
         
-    //Get current month as an int value
-    func getCurrentMonth(date: Date = Date())->Int{
+    ///Return the current month as an int value
+    static func getCurrentMonth(date: Date = Date())->Int{
         let components = calendar.dateComponents([.month], from: date)
         return components.month!
     }
     
-    //Get selected year with an input of a selected month
-    func getYear(input: Int?)->String{
+    ///Return the year depending on a selected month (Int) as an input
+    static func getYear(input: Int?)->String{
         let date = getDateFromComponents(month: input!+1)
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY"
         return formatter.string(from: date)
     }
     
-    //Get selected month
-    func getMonth(input: Int?)->String{
+    ///Return the month depending on a selected month (Int) as an input
+    static func getMonth(input: Int?)->String{
         let date = getDateFromComponents(month: input)
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM"
@@ -169,32 +171,33 @@ class CalendarDate{
         return formatter.string(from: date)
     }
 
-    //Get all days of each month
-    func getDaysOfMonth(selectedMonth: Int?)->[DateValue]{
+    ///Get all days of a selected month (Int) as an input
+    static func getDaysOfMonth(selectedMonth: Int?)->[DateValue]{
         var month: [DateValue] = []
         let date = getDateFromComponents(month: selectedMonth)
         let firstWeekday = calendar.component(.weekday, from: startOfMonth(date: date))+7
         for _ in 0...firstWeekday-3{
-            month.append(DateValue(day: -1, date: Date.isNotActive, hasItems: false))
+            month.append(DateValue(day: -1, date: Date.isNotActive, isDateInPast: false, hasItems: false))
         }
         let range = calendar.range(of: .day, in: .month, for: date)!
         for i in range{
             let dateStored = getDateFromComponents(month: selectedMonth, day: i)
-            let isEmpty = realmEnv.objects(ToDo.self).filter(ToDoFilter().withSelectedDate(d: dateStored)).isEmpty
-            let dateValue = DateValue(day: i, date: dateStored, hasItems: !isEmpty)
+            let boolDateInPast = dateStored < Calendar.current.startOfDay(for: Date()) ? true : false
+            let isEmpty = realmEnv.objects(ToDo.self).filter(ToDoFilter.withSelectedDate(d: dateStored)).isEmpty
+            let dateValue = DateValue(day: i, date: dateStored, isDateInPast: boolDateInPast, hasItems: !isEmpty)
             month.append(dateValue)
         }
         return month
     }
     
-    //Get the date with selectedMonth
-    func getDateFromComponents(year: Int? = Calendar.current.dateComponents([.year], from: Date()).year, month: Int?, day: Int? = 1)->Date{
+    ///Combine DateComponents [.year] and [.month] to a valid date
+    static func getDateFromComponents(year: Int? = Calendar.current.dateComponents([.year], from: Date()).year, month: Int?, day: Int? = 1)->Date{
         let dateComponents = DateComponents(year: year, month: month, day: day)
         return calendar.date(from: dateComponents) ?? Date()
     }
     
-    //Get the start of the month
-    func startOfMonth(date: Date) -> Date {
+    ///Get the start of the month depending on an input date
+    static func startOfMonth(date: Date) -> Date {
         return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: date)))!
     }
 }
