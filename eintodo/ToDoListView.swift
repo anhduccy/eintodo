@@ -10,10 +10,6 @@
 import SwiftUI
 import RealmSwift
 
-enum ToDoListType{
-    case all, date, list
-}
-
 struct ToDoListView: View {
     init(type: ToDoListType){
         self.type = type

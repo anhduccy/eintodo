@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		791A2F532860F0DE00B307AE /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791A2F522860F0DE00B307AE /* Migrator.swift */; };
 		791BC507286E2B9700CCA466 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791BC506286E2B9700CCA466 /* NotificationCenter.swift */; };
+		7945E346286EF43F0042F9CF /* ToDoFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7945E345286EF43F0042F9CF /* ToDoFilter.swift */; };
+		7945E348286EF4690042F9CF /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7945E347286EF4690042F9CF /* Enums.swift */; };
 		7964DC4F285E026900CB3975 /* eintodoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7964DC4E285E026900CB3975 /* eintodoApp.swift */; };
 		7964DC51285E026900CB3975 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7964DC50285E026900CB3975 /* ContentView.swift */; };
 		7964DC53285E026A00CB3975 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7964DC52285E026A00CB3975 /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 /* Begin PBXFileReference section */
 		791A2F522860F0DE00B307AE /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
 		791BC506286E2B9700CCA466 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
+		7945E345286EF43F0042F9CF /* ToDoFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoFilter.swift; sourceTree = "<group>"; };
+		7945E347286EF4690042F9CF /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		7964DC4B285E026900CB3975 /* eintodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eintodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7964DC4E285E026900CB3975 /* eintodoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eintodoApp.swift; sourceTree = "<group>"; };
 		7964DC50285E026900CB3975 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,6 +69,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7945E344286EF4290042F9CF /* Classes & Enums */ = {
+			isa = PBXGroup;
+			children = (
+				7945E347286EF4690042F9CF /* Enums.swift */,
+				791BC506286E2B9700CCA466 /* NotificationCenter.swift */,
+				7945E345286EF43F0042F9CF /* ToDoFilter.swift */,
+			);
+			path = "Classes & Enums";
+			sourceTree = "<group>";
+		};
 		7964DC42285E026900CB3975 = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +100,7 @@
 			children = (
 				7964DC4E285E026900CB3975 /* eintodoApp.swift */,
 				791A2F522860F0DE00B307AE /* Migrator.swift */,
+				7945E344286EF4290042F9CF /* Classes & Enums */,
 				79714620285E07D100596920 /* Models */,
 				7971461F285E07C200596920 /* Views */,
 				7964DC52285E026A00CB3975 /* Assets.xcassets */,
@@ -124,7 +139,6 @@
 				79714628285E130000596920 /* Global.swift */,
 				79714626285E08A700596920 /* ToDo.swift */,
 				798711A8285F174300050034 /* ToDoList.swift */,
-				791BC506286E2B9700CCA466 /* NotificationCenter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -225,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				798A7FE9286DB35E001139CD /* SettingsView.swift in Sources */,
+				7945E346286EF43F0042F9CF /* ToDoFilter.swift in Sources */,
 				79714629285E130000596920 /* Global.swift in Sources */,
 				797AC78E28623721001C80F4 /* HomeView.swift in Sources */,
 				798711A9285F174300050034 /* ToDoList.swift in Sources */,
@@ -239,6 +254,7 @@
 				7971461E285E044500596920 /* ViewLibrary.swift in Sources */,
 				797AC78C286232F2001C80F4 /* LoginView.swift in Sources */,
 				7964DC4F285E026900CB3975 /* eintodoApp.swift in Sources */,
+				7945E348286EF4690042F9CF /* Enums.swift in Sources */,
 				7971461C285E043500596920 /* ToDoListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
