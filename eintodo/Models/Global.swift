@@ -11,12 +11,13 @@ import RealmSwift
 ///Global User Model for user navigation
 class Global: ObservableObject{
     init(){
+        username = ""
         selectedDate = Date()        
         showCompletedToDos = false
         selectedList = ToDoList()
         selectedView = 0
     }
-    
+    @Published var username: String
     @Published var selectedDate: Date
     @Published var selectedList: ToDoList
     @Published var selectedView: Int?

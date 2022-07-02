@@ -38,10 +38,6 @@ struct eintodoApp: SwiftUI.App {
                 ResetRealm()
             }
         }
-        
-        Settings{
-            SettingsView()
-        }
     }
 }
 

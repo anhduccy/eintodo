@@ -61,7 +61,7 @@ struct CalendarView: View{
                                     }
                                 } else {
                                     ZStack{
-                                        Circle().fill(dayValue.hasItems ? (dayValue.isDateInPast ? .red : .blue) : .clear)
+                                        Circle().fill(dayValue.color)
                                             .opacity(0.15)
                                             .frame(width: 30, height: 30)
                                         Text("\(dayValue.day)")
@@ -136,8 +136,7 @@ class CalendarDate{
         let id = UUID().uuidString
         var day: Int
         var date: Date
-        var isDateInPast: Bool
-        var hasItems: Bool
+        var color: Color
     }
     
     static let calendar = Calendar.current
@@ -177,14 +176,16 @@ class CalendarDate{
         let date = getDateFromComponents(month: selectedMonth)
         let firstWeekday = calendar.component(.weekday, from: startOfMonth(date: date))+7
         for _ in 0...firstWeekday-3{
-            month.append(DateValue(day: -1, date: Date.isNotActive, isDateInPast: false, hasItems: false))
+            month.append(DateValue(day: -1, date: Date.isNotActive, color: .clear))
         }
         let range = calendar.range(of: .day, in: .month, for: date)!
         for i in range{
             let dateStored = getDateFromComponents(month: selectedMonth, day: i)
-            let boolDateInPast = dateStored < Calendar.current.startOfDay(for: Date()) ? true : false
-            let isEmpty = realmEnv.objects(ToDo.self).filter(ToDoFilter.withSelectedDate(d: dateStored)).isEmpty
-            let dateValue = DateValue(day: i, date: dateStored, isDateInPast: boolDateInPast, hasItems: !isEmpty)
+            var colorDateInPast: Color = dateStored < Calendar.current.startOfDay(for: Date()) ? .red : .blue
+            if realmEnv.objects(ToDo.self).filter(ToDoFilter.withSelectedDate(d: dateStored)).isEmpty{
+                colorDateInPast = .clear
+            }
+            let dateValue = DateValue(day: i, date: dateStored, color: colorDateInPast)
             month.append(dateValue)
         }
         return month

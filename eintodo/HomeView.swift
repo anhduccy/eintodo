@@ -15,6 +15,7 @@ struct HomeView: View {
     @ObservedResults(ToDo.self) var todos
     
     @State var showToDoListEditView: Bool = false
+    @State var showSettingsView: Bool = false
     var body: some View {
         NavigationView {
             List {
@@ -58,6 +59,18 @@ struct HomeView: View {
                 }
             }
             .listStyle(.sidebar)
+            .toolbar{
+                ToolbarItemGroup(placement: .automatic){
+                    Button(action: {
+                        showSettingsView.toggle()
+                    }, label: {
+                        Image(systemName: "gear")
+                    }).sheet(isPresented: $showSettingsView){
+                        SettingsView(isPresented: $showSettingsView)
+                    }
+                    .keyboardShortcut(",", modifiers: [.command])
+                }
+            }
         }
         .onAppear{
             try! realmEnv.write{
@@ -65,24 +78,6 @@ struct HomeView: View {
             }
         }
         .frame(minWidth: 200)
-        .toolbar{
-            ToolbarItem{
-                Button("Liste hinzufügen"){
-                    showToDoListEditView.toggle()
-                }
-                .sheet(isPresented: $showToDoListEditView){
-                    ToDoListEditView(isPresented: $showToDoListEditView, type: .add, list: ToDoList())
-                }
-                .keyboardShortcut("n", modifiers: [.command, .option])
-            }
-            ToolbarItem{
-                Button(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden"){
-                    withAnimation{
-                        global.showCompletedToDos.toggle()
-                    }
-                }
-            }
-        }
     }
 }
 

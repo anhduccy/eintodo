@@ -80,6 +80,22 @@ struct ToDoListView: View {
             }
             Spacer()
         }.padding()
+            .toolbar{
+                ToolbarItemGroup(placement: .primaryAction){
+                    Button("Liste hinzufügen"){
+                        showToDoListEditView.toggle()
+                    }
+                    .sheet(isPresented: $showToDoListEditView){
+                        ToDoListEditView(isPresented: $showToDoListEditView, type: .add, list: ToDoList())
+                    }
+                    .keyboardShortcut("n", modifiers: [.command, .option])
+                    Button(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden"){
+                        withAnimation{
+                            global.showCompletedToDos.toggle()
+                        }
+                    }
+                }
+            }
     }
     
     //Return the data set for different List-types: Todo has a list or Todo has not a list

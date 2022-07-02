@@ -9,7 +9,8 @@ import SwiftUI
 import RealmSwift
 
 struct SettingsView: View {
-    init(){
+    init(isPresented: Binding<Bool>){
+        _isPresented = isPresented
         let timeStr = UserDefaults.standard.string(forKey: "deadlineTime")
         if timeStr == nil {
             UserDefaults.standard.set("09:00", forKey: "deadlineTime")
@@ -21,9 +22,12 @@ struct SettingsView: View {
         let date = df.date(from: "\(currentDate), \(timeStr!)")
         _deadlineTime = State(initialValue: date!)
     }
+    @EnvironmentObject var global: Global
+    @Binding var isPresented: Bool
     @State var deadlineTime: Date
     var body: some View {
         VStack{
+            LeftText(text: "Einstellungen", font: .largeTitle, fontWeight: .bold)
             HStack{
                 Text("Uhrzeit für Benachrichtigungen")
                 DatePicker("", selection: $deadlineTime, displayedComponents: [.hourAndMinute])
@@ -33,9 +37,24 @@ struct SettingsView: View {
                 Spacer()
             }
             Spacer()
+            HStack{
+                Button("Abmelden"){
+                    if let user = realmApp.currentUser{
+                        global.username = ""
+                        user.logOut{ (error) in
+                            print("Failed to log out: \(error?.localizedDescription ?? "unknown")")
+                        }
+                    }
+                }.buttonStyle(.plain)
+                    .foregroundColor(.red)
+                Spacer()
+                Button("Schließen"){
+                    isPresented.toggle()
+                }.font(.body.weight(.bold)).buttonStyle(.plain).foregroundColor(.blue)
+            }
+            
         }.padding()
             .frame(width: 400, height: 500)
-            .navigationTitle("Einstellungen")
     }
     private func storeDeadlineTime(){
         let time = Date.format(displayType: "time", date: deadlineTime)

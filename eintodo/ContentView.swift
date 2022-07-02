@@ -11,21 +11,26 @@ import SwiftUI
 import RealmSwift
 
 struct ContentView: View {
-    @State var username: String = ""
-    
+    @EnvironmentObject var global: Global
     var body: some View {
-        if username == ""{
-            LoginView(username: $username)
-        } else {
-            if let user = realmApp.currentUser{
-                HomeView()
-                    .environment(\.realmConfiguration, user.configuration(partitionValue: user.id))
-                    .onAppear{
-                        NotificationCenter.askForUserNotificationPermission()
-                        realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
-                    }
+        ZStack{
+            if global.username == ""{
+                LoginView()
             } else {
-                Text("eintodo konnte nicht geladen werden")
+                if let user = realmApp.currentUser{
+                    HomeView()
+                        .environment(\.realmConfiguration, user.configuration(partitionValue: user.id))
+                        .onAppear{
+                            NotificationCenter.askForUserNotificationPermission()
+                            realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
+                        }
+                } else {
+                    Text("eintodo konnte nicht geladen werden")
+                }
+            }
+        }.onAppear{
+            if let user = realmApp.currentUser{
+                global.username = user.id
             }
         }
     }
