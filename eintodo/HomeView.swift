@@ -8,6 +8,7 @@
 import SwiftUI
 import RealmSwift
 
+
 struct HomeView: View {
     @EnvironmentObject var global: Global
     @ObservedResults(ToDoList.self) var lists

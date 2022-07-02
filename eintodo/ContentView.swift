@@ -20,7 +20,12 @@ struct ContentView: View {
             if let user = realmApp.currentUser{
                 HomeView()
                     .environment(\.realmConfiguration, user.configuration(partitionValue: user.id))
-                    .onAppear(perform: NotificationCenter.askForUserNotificationPermission)
+                    .onAppear{
+                        NotificationCenter.askForUserNotificationPermission()
+                        realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
+                    }
+            } else {
+                Text("eintodo konnte nicht geladen werden")
             }
         }
     }
@@ -35,7 +40,9 @@ struct ResetRealm: View{
         }
     }
     func reset(){
-        try? FileManager.default.removeItem(at: user.configuration(partitionValue: user.id).fileURL!)
+        if let user = realmApp.currentUser{
+            try? FileManager.default.removeItem(at: user.configuration(partitionValue: user.id).fileURL!)
+        }
     }
 }
 

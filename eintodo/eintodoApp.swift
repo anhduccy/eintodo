@@ -13,8 +13,7 @@ import Realm
 
 //Realm Setup
 let realmApp = RealmSwift.App(id: "***REMOVED***")
-let user = realmApp.currentUser! //<- IF NO LOGIN FAIL
-let realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
+var realmEnv = try! Realm(configuration: .defaultConfiguration)
 
 @main
 struct eintodoApp: SwiftUI.App {
@@ -27,7 +26,9 @@ struct eintodoApp: SwiftUI.App {
             if modus == 0{
                 ContentView()
                     .onAppear{
-                        print(user.configuration(partitionValue: user.id).fileURL?.path ?? "Could not find realm database in files")
+                        if let user = realmApp.currentUser{
+                            print(user.configuration(partitionValue: user.id).fileURL?.path ?? "Could not find realm database in files")
+                        }
                         UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatifaiable")
                     }
                     .environmentObject(Global())
