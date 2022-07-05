@@ -9,6 +9,7 @@
 
 import SwiftUI
 import RealmSwift
+import UniformTypeIdentifiers
 
 struct CalendarView: View{
     @ObservedResults(ToDo.self) var todos
@@ -71,6 +72,7 @@ struct CalendarView: View{
                                     }
                                 }
                             }).buttonStyle(.plain)
+                                .onDrop(of: [UTType.text], delegate: ToDoCalendarViewDropDelegate(global: global, date: dayValue.date))
                         }
                     }
                 }

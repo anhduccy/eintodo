@@ -101,7 +101,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
 }
 
 ///A model layer between data storage (Realm/MongoDB) and UI for type ToDo
- class ToDoModel: ObservableObject{
+class ToDoModel: ObservableObject{
     init(){
         _id = ObjectId()
         title = ""

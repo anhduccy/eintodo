@@ -9,6 +9,7 @@
 
 import SwiftUI
 import RealmSwift
+import UniformTypeIdentifiers
 
 struct ToDoListView: View {
     init(type: ToDoListType){
@@ -183,6 +184,21 @@ struct ToDoItemRow: View{
                 RoundedRectangle(cornerRadius: 7.5)
                     .fill(.ultraThinMaterial)
                     .shadow(color: type == .list ? global.selectedList.color.color : .blue, radius: 2)
+                    .onDrag{
+                        NSItemProvider(object: "\(todo._id)" as NSString)
+                    } preview: {
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 7.5)
+                                .fill(.blue)
+                            HStack{
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.white)
+                                Spacer()
+                            }
+                            .padding()
+                        }
+                        .frame(width: 120, height: 30)
+                    }
             }).buttonStyle(.plain)
                 .sheet(isPresented: $showToDoEditView){
                     ToDoEditView(global: global, isPresented: $showToDoEditView, type: .edit, todo: todo)

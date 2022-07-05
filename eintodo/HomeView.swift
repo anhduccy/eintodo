@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+import UniformTypeIdentifiers
 
 
 struct HomeView: View {
@@ -54,6 +55,7 @@ struct HomeView: View {
                             selection: $global.selectedView
                         ){
                             ToDoListCollectionRow(viewIndex: i + 2, list: lists[i])
+                                .onDrop(of: [UTType.text], delegate: ToDoListCollectionRowDropDelegate(global: global, list: lists[i]))
                         }
                     }
                 }
