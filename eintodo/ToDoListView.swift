@@ -112,7 +112,7 @@ struct ToDoListView: View {
             
             //ListView
             VStack{
-                if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && !global.showCompletedToDos){
+                if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && !global.showCompletedToDos) && returnDataSet(type: type, showCompletedToDos: false).isEmpty{
                     VStack{
                         Spacer()
                         HStack{
@@ -124,7 +124,7 @@ struct ToDoListView: View {
                         }
                         Spacer()
                     }
-                } else if !returnDataSet(type: type, showCompletedToDos: true).isEmpty && global.showCompletedToDos{
+                } else if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && global.showCompletedToDos) || !returnDataSet(type: type, showCompletedToDos: false).isEmpty{
                     ScrollView(.vertical, showsIndicators: false){
                         ForEach(returnDataSet(type: type, showCompletedToDos: global.showCompletedToDos), id: \.self){ todo in
                             ToDoItemRow(todo: todo, type: type)
@@ -255,6 +255,8 @@ struct ToDoItemRow: View{
     @ObservedRealmObject var todo: ToDo
     let type: ToDoListType
     
+    @State var onHover: Bool = false
+    
     @State var title: String
 
     var body: some View{
@@ -264,7 +266,7 @@ struct ToDoItemRow: View{
             }, label: {
                 RoundedRectangle(cornerRadius: 7.5)
                     .fill(appearance == .dark ? ColorPalette.cardDarkmode : ColorPalette.cardLightmode)
-                    .shadow(color: .gray, radius: 1)
+                    .shadow(color: onHover ? (type == .list ? todo.list.first!.color.color : .blue) : .gray, radius: 1)
                     .onDrag{
                         NSItemProvider(object: "\(todo._id)" as NSString)
                     } preview: {
@@ -343,6 +345,11 @@ struct ToDoItemRow: View{
             .padding(.bottom, 12.5)
             .padding(.leading, 15)
             .padding(.trailing, 10)
+        }
+        .onHover{ over in
+            withAnimation{
+                onHover = over
+            }
         }
     }
 }
