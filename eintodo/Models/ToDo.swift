@@ -18,6 +18,7 @@ class ToDo: Object, ObjectKeyIdentifiable{
     @Persisted var notification: Date
     @Persisted var marked: Bool = false
     @Persisted var priority: Priotity = .none
+    @Persisted var subToDos: RealmSwift.List<SubToDo>
     @Persisted(originProperty: "todos") var list: LinkingObjects<ToDoList>
     
     enum Priotity: Int, PersistableEnum{

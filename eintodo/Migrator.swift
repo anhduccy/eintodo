@@ -15,13 +15,14 @@ class Migrator{
     }
     
     func updateSchema(){
-        let version = 3
+        let version = 4
         let newConfig = Realm.Configuration(schemaVersion: UInt64(version)){ migration, oldSchemaVersion in
             if oldSchemaVersion < version{
+                migration.enumerateObjects(ofType: SubToDo.className()){ oldObj, newObj in
+                }
                 migration.enumerateObjects(ofType: ToDo.className()){ oldObj, newObj in
                 }
                 migration.enumerateObjects(ofType: ToDoList.className()){ oldObj, newObj in
-                    newObj!["sortIndex"] = 0
                 }
             }
         }

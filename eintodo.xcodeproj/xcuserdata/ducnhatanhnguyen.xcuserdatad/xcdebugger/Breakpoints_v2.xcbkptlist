@@ -7,31 +7,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "70A008BF-A1E4-4291-AB02-FAE7BC9BB94B"
+            uuid = "919B1800-9B51-490B-B380-E56DC66EDD06"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "eintodo/SettingsView.swift"
+            filePath = "eintodo/ToDoEditView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "storeDeadlineTime()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DBB52DB1-98C9-4141-904A-9146EE582C1C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "eintodo/eintodoApp.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>

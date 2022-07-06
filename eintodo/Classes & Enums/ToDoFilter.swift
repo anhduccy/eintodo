@@ -8,11 +8,6 @@
 import Foundation
 
 class ToDoFilter{
-    ///Show all to-dos depending on a given list
-    static func withSelectedListAll(l: ToDoList)->NSPredicate{
-        let predicate = NSPredicate(format: "_id == %@", l._id)
-        return predicate
-    }
     ///Show the to-dos which is not completed yet
     static func showNotCompleted()->NSPredicate{
         let predicate = NSPredicate(format: "completed == false")

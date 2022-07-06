@@ -24,6 +24,7 @@ struct ContentView: View {
                             NotificationCenter.askForUserNotificationPermission()
                             realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
                         }
+                        .frame(minHeight: 550)
                 } else {
                     Text("eintodo konnte nicht geladen werden")
                 }

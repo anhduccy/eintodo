@@ -34,7 +34,7 @@ struct ToDoEditView: View{
     
     @State var showListPickerPopover: Bool = false
     @State var showPriorityPickerPopover: Bool = false
-    
+        
     var body: some View{
         VStack(spacing: 20){
             //List Picker Popover
@@ -61,53 +61,61 @@ struct ToDoEditView: View{
                     .foregroundColor(.gray)
             }
             Divider()
-            VStack(spacing: 10){
-                //Deadline
-                SystemDatePicker(displayType: "date", date: $model.deadline, title: "Deadline", systemName: "calendar", size: 27.5, color: model.list.color.color)
-    
-                //Notification
-                SystemDatePicker(date: $model.notification, title: "Erinnerung", systemName: "bell", size: 27.5, color: model.list.color.color)
-                
-                //Priorities
-                HStack(alignment: .center){
-                    Button(action: {
-                        showPriorityPickerPopover.toggle()
-                    }, label: {
-                        SystemIcon(isActive: model.priority == ToDo.Priotity.none ? false : true, systemName: $model.priority.wrappedValue.systemName, size: 27.5, color: model.list.color.color)
-                    }).buttonStyle(.plain)
-                        .popover(isPresented: $showPriorityPickerPopover){
-                            ToDoPriorityPickerPopover(isPresented: $showPriorityPickerPopover, model: model)
-                        }
-                    Text("Priorität")
-                    Spacer()
-                    Text(model.priority.text)
-                        .foregroundColor(model.priority.text == "Keine" ? .gray : model.list.color.color)
-                        .opacity(model.priority.text == "Keine" ? 0.5 : 1)
-                }
-                
-                //IsMarked
-                HStack(alignment: .center){
-                    Button(action: {
-                        withAnimation{
-                            model.marked.toggle()
-                        }
-                    }, label: {
-                        SystemIcon(isActive: model.marked, systemName: "pin", size: 27.5, color: .red)
-                    }).buttonStyle(.plain)
-                    Text("Markiert")
-                    Spacer()
-                    if model.marked{
+            
+            ScrollView(.vertical, showsIndicators: false){
+                //Attributes
+                VStack(spacing: 10){
+                    //Deadline
+                    SystemDatePicker(displayType: "date", date: $model.deadline, title: "Deadline", systemName: "calendar", size: 27.5, color: model.list.color.color)
+        
+                    //Notification
+                    SystemDatePicker(date: $model.notification, title: "Erinnerung", systemName: "bell", size: 27.5, color: model.list.color.color)
+                    
+                    //Priorities
+                    HStack(alignment: .center){
+                        Button(action: {
+                            showPriorityPickerPopover.toggle()
+                        }, label: {
+                            SystemIcon(isActive: model.priority == ToDo.Priotity.none ? false : true, systemName: $model.priority.wrappedValue.systemName, size: 27.5, color: model.list.color.color)
+                        }).buttonStyle(.plain)
+                            .popover(isPresented: $showPriorityPickerPopover){
+                                ToDoPriorityPickerPopover(isPresented: $showPriorityPickerPopover, model: model)
+                            }
+                        Text("Priorität")
+                        Spacer()
+                        Text(model.priority.text)
+                            .foregroundColor(model.priority.text == "Keine" ? .gray : model.list.color.color)
+                            .opacity(model.priority.text == "Keine" ? 0.5 : 1)
+                    }
+                    
+                    //IsMarked
+                    HStack(alignment: .center){
+                        Button(action: {
+                            withAnimation{
+                                model.marked.toggle()
+                            }
+                        }, label: {
+                            SystemIcon(isActive: model.marked, systemName: "pin", size: 27.5, color: .red)
+                        }).buttonStyle(.plain)
                         Text("Markiert")
-                            .foregroundColor(.red)
-                    } else {
-                        Text("Nicht markiert")
-                            .foregroundColor(.gray)
-                            .opacity(0.5)
+                        Spacer()
+                        if model.marked{
+                            Text("Markiert")
+                                .foregroundColor(.red)
+                        } else {
+                            Text("Nicht markiert")
+                                .foregroundColor(.gray)
+                                .opacity(0.5)
+                        }
                     }
                 }
-            }
+                
+                //Sub To-Dos
+                SubToDoListView(todo: todo)
+                    .padding(.top, 5)
 
-            Spacer()
+                Spacer()
+            }
             
             //Dismiss Bar
             HStack{
@@ -140,7 +148,7 @@ struct ToDoEditView: View{
                 .disabled(model.title.isEmpty)
             }
         }.padding()
-            .frame(width: 400, height: 500)
+            .frame(minWidth: 400, idealWidth: 400, maxWidth: 400, minHeight: 350, idealHeight: 500, maxHeight: 700)
             .background(.ultraThinMaterial)
     }
 }

@@ -28,6 +28,8 @@
 		797CADDA28749895003ED527 /* DropDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797CADD928749895003ED527 /* DropDelegates.swift */; };
 		798711A9285F174300050034 /* ToDoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798711A8285F174300050034 /* ToDoList.swift */; };
 		798711AB285F321800050034 /* ToDoListEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798711AA285F321800050034 /* ToDoListEditView.swift */; };
+		7988627D2876211400256186 /* SubToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7988627C2876211400256186 /* SubToDo.swift */; };
+		7988627F28762EEA00256186 /* SubToDoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7988627E28762EEA00256186 /* SubToDoListView.swift */; };
 		798A7FE9286DB35E001139CD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798A7FE8286DB35E001139CD /* SettingsView.swift */; };
 		79FAC55D285F9560005E4251 /* ToDoListCollectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FAC55C285F9560005E4251 /* ToDoListCollectionRow.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,8 @@
 		797CADD928749895003ED527 /* DropDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDelegates.swift; sourceTree = "<group>"; };
 		798711A8285F174300050034 /* ToDoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoList.swift; sourceTree = "<group>"; };
 		798711AA285F321800050034 /* ToDoListEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListEditView.swift; sourceTree = "<group>"; };
+		7988627C2876211400256186 /* SubToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubToDo.swift; sourceTree = "<group>"; };
+		7988627E28762EEA00256186 /* SubToDoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubToDoListView.swift; sourceTree = "<group>"; };
 		798A7FE8286DB35E001139CD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		79FAC55C285F9560005E4251 /* ToDoListCollectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListCollectionRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,6 +133,7 @@
 				797AC78B286232F2001C80F4 /* LoginView.swift */,
 				797AC78D28623721001C80F4 /* HomeView.swift */,
 				79714617285E040700596920 /* CalendarView.swift */,
+				7988628028762F0E00256186 /* SubToDo */,
 				798711AC285F324800050034 /* ToDo */,
 				798711AD285F325E00050034 /* ToDoList */,
 				7971461D285E044500596920 /* ViewLibrary.swift */,
@@ -140,8 +145,9 @@
 			isa = PBXGroup;
 			children = (
 				79714628285E130000596920 /* Global.swift */,
-				79714626285E08A700596920 /* ToDo.swift */,
 				798711A8285F174300050034 /* ToDoList.swift */,
+				79714626285E08A700596920 /* ToDo.swift */,
+				7988627C2876211400256186 /* SubToDo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -162,6 +168,14 @@
 				79FAC55C285F9560005E4251 /* ToDoListCollectionRow.swift */,
 			);
 			name = ToDoList;
+			sourceTree = "<group>";
+		};
+		7988628028762F0E00256186 /* SubToDo */ = {
+			isa = PBXGroup;
+			children = (
+				7988627E28762EEA00256186 /* SubToDoListView.swift */,
+			);
+			name = SubToDo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,8 +269,10 @@
 				79714618285E040700596920 /* CalendarView.swift in Sources */,
 				7971461A285E041C00596920 /* ToDoEditView.swift in Sources */,
 				791BC507286E2B9700CCA466 /* NotificationCenter.swift in Sources */,
+				7988627F28762EEA00256186 /* SubToDoListView.swift in Sources */,
 				7971461E285E044500596920 /* ViewLibrary.swift in Sources */,
 				797AC78C286232F2001C80F4 /* LoginView.swift in Sources */,
+				7988627D2876211400256186 /* SubToDo.swift in Sources */,
 				7964DC4F285E026900CB3975 /* eintodoApp.swift in Sources */,
 				7945E348286EF4690042F9CF /* Enums.swift in Sources */,
 				7971461C285E043500596920 /* ToDoListView.swift in Sources */,
