@@ -33,7 +33,6 @@ struct eintodoApp: SwiftUI.App {
                     }
                     .environmentObject(Global())
                     .navigationTitle("eintodo")
-                    .frame(minWidth: 900)
             } else {
                 ResetRealm()
             }

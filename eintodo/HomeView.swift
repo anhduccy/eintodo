@@ -60,6 +60,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .frame(width: 200)
             .listStyle(.sidebar)
             .toolbar{
                 ToolbarItemGroup(placement: .automatic){
@@ -79,7 +80,6 @@ struct HomeView: View {
                 initDefaultList(global: global, lists: $lists)
             }
         }
-        .frame(minWidth: 200)
     }
 }
 

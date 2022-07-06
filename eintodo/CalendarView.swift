@@ -124,7 +124,7 @@ struct CalendarView: View{
                         .foregroundColor(.blue)
                 }
             }
-            .frame(minWidth: 300)
+            .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
             .padding()
             
             ToDoListView(type: .date)
