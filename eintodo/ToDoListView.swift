@@ -25,76 +25,132 @@ struct ToDoListView: View {
     @State var showToDoEditView: Bool = false
         
     var body: some View {
-        VStack{
-            //Navigation Header
-            VStack(spacing: 0){
-                HStack(spacing: 5){
-                    Text(headline())
-                        .font(.largeTitle.weight(.bold))
-                        .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
-                    Spacer()
-                    
-                    Button(action: {
-                        showToDoEditView.toggle()
-                    }, label: {
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 100)
-                                .stroke(type == .list ? global.selectedList.color.color : .blue, lineWidth: 1)
-                            HStack{
-                                Spacer()
-                                Text("To-Do hinzufügen")
-                                    .font(.system(size: 10).weight(.semibold))
-                                    .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                                Spacer()
-                                Image(systemName: "plus.circle.fill")
+        GeometryReader{ geo in
+            VStack(spacing: 10){
+                //Navigation Header
+                VStack(spacing: 0){
+                    HStack(spacing: 5){
+                        Text(headline())
+                            .font(.largeTitle.weight(.bold))
+                            .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
+                        Spacer()
+                        
+                        Button(action: {
+                            showToDoEditView.toggle()
+                        }, label: {
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 100)
+                                    .stroke(type == .list ? global.selectedList.color.color : .blue, lineWidth: 1)
+                                HStack{
+                                    Spacer()
+                                    Text("To-Do hinzufügen")
+                                        .font(.system(size: 10).weight(.semibold))
+                                        .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                                    Spacer()
+                                    Image(systemName: "plus.circle.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20)
+                                        .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                                }
+                            }.frame(width: 130, height: 20)
+                        }).buttonStyle(.plain)
+                            .sheet(isPresented: $showToDoEditView){
+                                ToDoEditView(global: global, isPresented: $showToDoEditView, type: .add, todo: ToDo())
+                            }
+                            .keyboardShortcut("n", modifiers: [.command])
+                        
+                        if type == .list{
+                            Button(action: {
+                                showToDoListEditView.toggle()
+                            }, label: {
+                                Image(systemName: "info.circle")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 20)
                                     .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                            }
-                        }.frame(width: 130, height: 20)
-                    }).buttonStyle(.plain)
-                        .sheet(isPresented: $showToDoEditView){
-                            ToDoEditView(global: global, isPresented: $showToDoEditView, type: .add, todo: ToDo())
+                            }).buttonStyle(.plain)
+                                .sheet(isPresented: $showToDoListEditView){
+                                    ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
+                                }
                         }
-                        .keyboardShortcut("n", modifiers: [.command])
-                    
-                    if type == .list{
-                        Button(action: {
-                            showToDoListEditView.toggle()
-                        }, label: {
-                            Image(systemName: "info.circle")
+                        if calculateProgress() == 1 {
+                            Image(systemName: "checkmark.circle.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
-                                .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                        }).buttonStyle(.plain)
-                            .sheet(isPresented: $showToDoListEditView){
-                                ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
-                            }
-                    }
-                }
-                if type == .list{
-                    LeftText(text: global.selectedList.notes)
-                        .foregroundColor(.gray)
-                }
-            }
-            
-            //ListView
-            VStack{
-                if !todos.isEmpty || !global.selectedList.todos.isEmpty{
-                    ScrollView(.vertical, showsIndicators: false){
-                        ForEach(returnDataSet(), id: \.self){ todo in
-                            ToDoItemRow(todo: todo, type: type)
+                                .foregroundColor(.green)
                         }
-                        .padding(.top, 2.5)
-                        .padding(.leading, 5)
-                        .padding(.trailing, 5)
+                    }
+                    if type == .list{
+                        LeftText(text: global.selectedList.notes)
+                            .foregroundColor(.gray)
+                    } else if type == .all{
+                        LeftText(text: "Alle Erinnerungen auf einem Blick")
+                            .foregroundColor(.gray)
                     }
                 }
+                
+                //Progress-Bar
+                if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 100)
+                            .fill(global.selectedList.color.color)
+                            .frame(height: 6)
+                            .opacity(0.1)
+                        
+                        HStack{
+                            RoundedRectangle(cornerRadius: 100)
+                                .fill(global.selectedList.color.color)
+                                .frame(width: geo.size.width * calculateProgress(), height: 6)
+                            if calculateProgress() != 1 {
+                                Spacer()
+                            }
+                        }
+                    }
+                }
+                
+                //ListView
+                VStack{
+                    if !returnDataSet(type: type, showCompletedToDos: true).isEmpty && returnDataSet(type: type, showCompletedToDos: false).isEmpty{
+                        VStack{
+                            Spacer()
+                            HStack{
+                                Spacer()
+                                Text("Du hast alle Erinnerungen erledigt")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.75)
+                                Spacer()
+                            }
+                            Spacer()
+                        }
+                    } else if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
+                        ScrollView(.vertical, showsIndicators: false){
+                            ForEach(returnDataSet(type: type, showCompletedToDos: global.showCompletedToDos), id: \.self){ todo in
+                                ToDoItemRow(todo: todo, type: type)
+                            }
+                            .padding(.top, 2.5)
+                            .padding(.leading, 5)
+                            .padding(.trailing, 5)
+                        }
+                    } else {
+                        VStack{
+                            Spacer()
+                            HStack{
+                                Spacer()
+                                Text("Keine Erinnerungen vorhanden")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.75)
+                                Spacer()
+                            }
+                            Spacer()
+                        }
+                    }
+                }
+                Spacer()
             }
-            Spacer()
-        }.padding()
+        }
+        .padding()
             .toolbar{
                 ToolbarItemGroup(placement: .primaryAction){
                     Button("Liste hinzufügen"){
@@ -114,8 +170,17 @@ struct ToDoListView: View {
             .background(appearance == .dark ? ColorPalette.backgroundDarkmode : ColorPalette.backgroundLightmode)
     }
     
-    //Return the data set for different List-types: Todo has a list or Todo has not a list
-    private func returnDataSet()->Results<ToDo>{
+    private func calculateProgress()->CGFloat{
+        withAnimation{
+            let pendingToDos = returnDataSet(type: type, showCompletedToDos: false).count
+            let allToDos = returnDataSet(type: type, showCompletedToDos: true).count
+            let factor = 1.0 - (Double(pendingToDos) / Double(allToDos))
+            return factor
+        }
+    }
+    
+    ///Return the data set for different List-types: Todo has a list or Todo has not a list
+    private func returnDataSet(type: ToDoListType, showCompletedToDos: Bool)->Results<ToDo>{
         let defaultSort = [SortDescriptor(keyPath: \ToDo.completed),
                            SortDescriptor(keyPath: \ToDo.marked, ascending: false),
                            SortDescriptor(keyPath: \ToDo.priority, ascending: false),
@@ -126,7 +191,7 @@ struct ToDoListView: View {
         let obj = ObservedRealmObject(wrappedValue: global.selectedList)
         let list = obj.wrappedValue
         
-        if global.showCompletedToDos{
+        if showCompletedToDos{
             switch type{
             case .all:
                 return todos.sorted(by: defaultSort)
