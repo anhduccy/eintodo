@@ -15,6 +15,7 @@ struct ToDoListView: View {
     init(type: ToDoListType){
         self.type = type
     }
+    @Environment(\.colorScheme) var appearance
     
     @EnvironmentObject var global: Global
     @ObservedResults(ToDo.self) var todos
@@ -28,9 +29,35 @@ struct ToDoListView: View {
             //Navigation Header
             VStack(spacing: 0){
                 HStack(spacing: 5){
-                    LeftText(text: headline(), font: .largeTitle, fontWeight: .bold)
+                    Text(headline())
+                        .font(.largeTitle.weight(.bold))
                         .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
                     Spacer()
+                    
+                    Button(action: {
+                        showToDoEditView.toggle()
+                    }, label: {
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 100)
+                                .stroke(type == .list ? global.selectedList.color.color : .blue, lineWidth: 1)
+                            HStack{
+                                Spacer()
+                                Text("To-Do hinzufügen")
+                                    .font(.system(size: 10).weight(.semibold))
+                                    .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                                Spacer()
+                                Image(systemName: "plus.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20)
+                                    .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                            }
+                        }.frame(width: 130, height: 20)
+                    }).buttonStyle(.plain)
+                        .sheet(isPresented: $showToDoEditView){
+                            ToDoEditView(global: global, isPresented: $showToDoEditView, type: .add, todo: ToDo())
+                        }
+                        .keyboardShortcut("n", modifiers: [.command])
                     
                     if type == .list{
                         Button(action: {
@@ -46,23 +73,10 @@ struct ToDoListView: View {
                                 ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
                             }
                     }
-                    
-                    Button(action: {
-                        showToDoEditView.toggle()
-                    }, label: {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20)
-                            .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                    }).buttonStyle(.plain)
-                        .sheet(isPresented: $showToDoEditView){
-                            ToDoEditView(global: global, isPresented: $showToDoEditView, type: .add, todo: ToDo())
-                        }
-                        .keyboardShortcut("n", modifiers: [.command])
                 }
                 if type == .list{
-                    LeftText(text: global.selectedList.notes).foregroundColor(.gray)
+                    LeftText(text: global.selectedList.notes)
+                        .foregroundColor(.gray)
                 }
             }
             
@@ -97,6 +111,7 @@ struct ToDoListView: View {
                     }
                 }
             }
+            .background(appearance == .dark ? ColorPalette.backgroundDarkmode : ColorPalette.backgroundLightmode)
     }
     
     //Return the data set for different List-types: Todo has a list or Todo has not a list
@@ -169,6 +184,7 @@ struct ToDoItemRow: View{
         _title = State(initialValue: todo.title)
     }
     
+    @Environment(\.colorScheme) var appearance
     @EnvironmentObject var global: Global
     @State var showToDoEditView: Bool = false
     @ObservedRealmObject var todo: ToDo
@@ -182,8 +198,8 @@ struct ToDoItemRow: View{
                 showToDoEditView.toggle()
             }, label: {
                 RoundedRectangle(cornerRadius: 7.5)
-                    .fill(.ultraThinMaterial)
-                    .shadow(color: type == .list ? global.selectedList.color.color : .blue, radius: 2)
+                    .fill(appearance == .dark ? ColorPalette.cardDarkmode : ColorPalette.cardLightmode)
+                    .shadow(color: .gray, radius: 1)
                     .onDrag{
                         NSItemProvider(object: "\(todo._id)" as NSString)
                     } preview: {
@@ -204,7 +220,7 @@ struct ToDoItemRow: View{
                     ToDoEditView(global: global, isPresented: $showToDoEditView, type: .edit, todo: todo)
                 }
             
-            HStack(spacing: 10){
+            HStack(spacing: 15){
                 //Check box
                 Button(action: {
                     $todo.completed.wrappedValue.toggle()
@@ -212,9 +228,8 @@ struct ToDoItemRow: View{
                     Image(systemName: todo.completed ? "checkmark.circle.fill" : "circle")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 22.5)
-                        .foregroundColor(todo.completed ? (type == .list ? global.selectedList.color.color : .blue) : .gray)
-                        .opacity(todo.completed ? 1 : 0.75)
+                        .frame(width: 22)
+                        .foregroundColor(todo.list.first?.color.color)
                 }).buttonStyle(.plain)
                 //Text
                 VStack{
@@ -259,7 +274,7 @@ struct ToDoItemRow: View{
             }
             .padding(.top, 12.5)
             .padding(.bottom, 12.5)
-            .padding(.leading)
+            .padding(.leading, 15)
             .padding(.trailing, 10)
         }
     }

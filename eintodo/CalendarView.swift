@@ -12,6 +12,7 @@ import RealmSwift
 import UniformTypeIdentifiers
 
 struct CalendarView: View{
+    @Environment(\.colorScheme) var appearance
     @ObservedResults(ToDo.self) var todos
     @EnvironmentObject var global: Global
     @State var selectedMonth: Int = CalendarDate.getCurrentMonth()
@@ -128,6 +129,7 @@ struct CalendarView: View{
             
             ToDoListView(type: .date)
         }
+        .background(appearance == .dark ? ColorPalette.backgroundDarkmode : ColorPalette.backgroundLightmode)
     }
 }
 
