@@ -79,13 +79,7 @@ struct ToDoListView: View {
                     }
                     
                     if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
-                        if calculateProgress() == 1 {
-                            Image(systemName: "checkmark.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20)
-                                .foregroundColor(.green)
-                        } else {
+                        if calculateProgress() != 1 {
                             //Progress-Circle
                                 ZStack{
                                     Circle()
@@ -117,6 +111,8 @@ struct ToDoListView: View {
                         Spacer()
                         HStack{
                             Spacer()
+                            Image(systemName: "checkmark")
+                                .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
                             Text("Du hast alle Erinnerungen erledigt")
                                 .foregroundColor(.gray)
                                 .opacity(0.75)

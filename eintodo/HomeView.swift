@@ -17,12 +17,17 @@ struct HomeView: View {
     
     @State var showToDoListEditView: Bool = false
     @State var showSettingsView: Bool = false
+    @State var showCalendarView: Bool = true
     var body: some View {
         NavigationView {
             List {
                 Section(header: Text("Start")){
                     NavigationLink(tag: 0, selection: $global.selectedView) {
-                        CalendarView()
+                        if showCalendarView{
+                            CalendarView()
+                        } else {
+                            EmptyView()
+                        }
                     } label: {
                         Label("Kalender", systemImage: "calendar")
                     }
