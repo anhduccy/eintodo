@@ -264,7 +264,7 @@ struct ToDoItemRow: View{
             }, label: {
                 RoundedRectangle(cornerRadius: 7.5)
                     .fill(appearance == .dark ? ColorPalette.cardDarkmode : ColorPalette.cardLightmode)
-                    .shadow(color: onHover ? (type == .list ? (todo.list.first?.color.color ?? .blue) : .blue) : .gray, radius: onHover ? 2 : 1)
+                    .shadow(color: onHover ? (todo.list.first?.color.color ?? .blue) : .gray, radius: onHover ? 2 : 1)
                     .onDrag{
                         NSItemProvider(object: "\(todo._id)" as NSString)
                     } preview: {
@@ -285,59 +285,69 @@ struct ToDoItemRow: View{
                 .sheet(isPresented: $showToDoEditView){
                     ToDoEditView(global: global, isPresented: $showToDoEditView, listType: type, editViewType: .edit, todo: todo)
                 }
-            
-            HStack(spacing: 15){
-                //Check box
-                Button(action: {
-                    withAnimation{
-                        $todo.completed.wrappedValue.toggle()
-                    }
-                }, label: {
-                    Image(systemName: todo.completed ? "checkmark.circle.fill" : "circle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 22)
-                        .foregroundColor(todo.list.first?.color.color)
-                }).buttonStyle(.plain)
-                //Text
-                VStack{
-                    HStack(alignment: .top, spacing: 2.5){
-                        if todo.marked{
-                            Image(systemName: "pin")
-                                .foregroundColor(.red)
+            VStack{
+                HStack(spacing: 15){
+                    //Check box
+                    Button(action: {
+                        withAnimation{
+                            $todo.completed.wrappedValue.toggle()
                         }
-                        TextField("", text: $title, onEditingChanged: { _ in 
-                            $todo.title.wrappedValue = title
-                        })
-                            .font(.body.bold())
-                            .textFieldStyle(.plain)
-                    }
-                    .padding(.bottom, todo.marked || todo.notification != Date.isNotActive || todo.deadline != Date.isNotActive  ? -6 : 0)
+                    }, label: {
+                        Image(systemName: todo.completed ? "checkmark.circle.fill" : "circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 22)
+                            .foregroundColor(todo.list.first?.color.color)
+                    }).buttonStyle(.plain)
+                    //Text
+                    VStack{
+                        HStack(alignment: .top, spacing: 2.5){
+                            if todo.marked{
+                                Image(systemName: "pin")
+                                    .foregroundColor(.red)
+                            }
+                            TextField("", text: $title, onEditingChanged: { _ in
+                                $todo.title.wrappedValue = title
+                            })
+                                .font(.body.bold())
+                                .textFieldStyle(.plain)
+                        }
+                        .padding(.bottom, todo.marked || todo.notification != Date.isNotActive || todo.deadline != Date.isNotActive  ? -6 : 0)
 
-                    if(todo.notification != Date.isNotActive){
-                        LeftText(text: Date.format(date: todo.notification)).foregroundColor(.gray)
+                        if(todo.notification != Date.isNotActive){
+                            LeftText(text: Date.format(date: todo.notification)).foregroundColor(.gray)
+                        }
+                        if(todo.deadline != Date.isNotActive){
+                            LeftText(text: "Fällig am " + Date.format(displayType: "date", date: todo.deadline)).foregroundColor(.gray)
+                        }
                     }
-                    if(todo.deadline != Date.isNotActive){
-                        LeftText(text: "Fällig am " + Date.format(displayType: "date", date: todo.deadline)).foregroundColor(.gray)
+                    Spacer()
+                    //Status
+                    HStack(alignment: .center, spacing: 2.5){
+                        if type != .list && !todo.list.isEmpty {
+                            ToDoItemRowSymbol(systemName: todo.list.first!.symbol, color: todo.list.first!.color.color)
+                        }
+                        if todo.priority != .none{
+                            ToDoItemRowSymbol(systemName: todo.priority.systemName, color: .blue)
+                        }
+                        if todo.notes != ""{
+                            ToDoItemRowSymbol(systemName: "text.alignleft", color: .gray)
+                        }
+                        Button(action: {
+                            ToDo.delete(todo: todo)
+                        }, label: {
+                            ToDoItemRowSymbol(systemName: "trash", color: .red)
+                        }).buttonStyle(.plain)
                     }
                 }
-                Spacer()
-                //Status
-                HStack(alignment: .center, spacing: 2.5){
-                    if type != .list && !todo.list.isEmpty {
-                        ToDoItemRowSymbol(systemName: todo.list.first!.symbol, color: todo.list.first!.color.color)
-                    }
-                    if todo.priority != .none{
-                        ToDoItemRowSymbol(systemName: todo.priority.systemName, color: .blue)
-                    }
-                    if todo.notes != ""{
-                        ToDoItemRowSymbol(systemName: "text.alignleft", color: .gray)
-                    }
-                    Button(action: {
-                        ToDo.delete(todo: todo)
-                    }, label: {
-                        ToDoItemRowSymbol(systemName: "trash", color: .red)
-                    }).buttonStyle(.plain)
+                if !todo.subToDos.isEmpty{
+                        VStack(spacing: 1){
+                            ForEach(todo.subToDos, id: \.self){ subToDo in
+                                ToDoItemRowSubToDoRow(subToDo: subToDo)
+                            }
+                        }
+                        .padding(.top, -5)
+                        .padding(.leading, 35)
                 }
             }
             .padding(.top, 12.5)
@@ -349,6 +359,34 @@ struct ToDoItemRow: View{
             withAnimation{
                 onHover = over
             }
+        }
+    }
+}
+
+struct ToDoItemRowSubToDoRow: View{
+    init(subToDo: SubToDo){
+        self.subToDo = subToDo
+        _title = State(initialValue: subToDo.title)
+    }
+    @State var title: String
+    @ObservedRealmObject var subToDo: SubToDo
+    
+    var body: some View{
+        HStack(spacing: 5){
+            Button(action: {
+                withAnimation{
+                    $subToDo.completed.wrappedValue.toggle()
+                }
+            }, label: {
+                Image(systemName: subToDo.completed ? "checkmark.circle" : "circle")
+                    .foregroundColor(subToDo.todo.first?.list.first?.color.color ?? .blue)
+            }).buttonStyle(.plain)
+            TextField("Titel", text: $title, onEditingChanged: { _ in
+                    $subToDo.title.wrappedValue = title
+                  })
+                .textFieldStyle(.plain)
+                .foregroundColor(.gray)
+            Spacer()
         }
     }
 }
