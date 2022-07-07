@@ -150,13 +150,6 @@ struct ToDoListView: View {
         .padding()
             .toolbar{
                 ToolbarItemGroup(placement: .primaryAction){
-                    Button("Liste hinzufügen"){
-                        showToDoListEditView.toggle()
-                    }
-                    .sheet(isPresented: $showToDoListEditView){
-                        ToDoListEditView(isPresented: $showToDoListEditView, type: .add, list: ToDoList())
-                    }
-                    .keyboardShortcut("n", modifiers: [.command, .option])
                     Button(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden"){
                         withAnimation{
                             global.showCompletedToDos.toggle()

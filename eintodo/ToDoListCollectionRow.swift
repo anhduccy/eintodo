@@ -19,10 +19,8 @@ struct ToDoListCollectionRow: View{
         HStack{
             SystemIcon(systemName: list.symbol, size: 20, color: list.color.color)
             Text(list.title)
-                .foregroundColor(viewIndex == global.selectedView ? .white : list.color.color)
             Spacer()
             Text("\(list.todos.filter(ToDoFilter.showNotCompleted()).count)")
-                .foregroundColor(viewIndex == global.selectedView ? .white : list.color.color)
             if overItem{
                 Button(action: {
                     showToDoListEditView.toggle()

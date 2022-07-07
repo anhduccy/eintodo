@@ -63,6 +63,26 @@ struct HomeView: View {
                                 .onDrop(of: [UTType.text], delegate: ToDoListCollectionRowDropDelegate(global: global, list: lists[i]))
                         }
                     }
+                    HStack{
+                        Button(action: {
+                            showToDoListEditView.toggle()
+                        }, label: {
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15, height: 15)
+                                .padding(.leading, 2)
+                                .padding(.trailing, 2)
+                            Text("Neue Liste")
+                        })
+                        .buttonStyle(.plain)
+                        .foregroundColor(.blue)
+                        .keyboardShortcut("n", modifiers: [.command, .option])
+                        .sheet(isPresented: $showToDoListEditView){
+                            ToDoListEditView(isPresented: $showToDoListEditView, type: .add, list: ToDoList())
+                        }
+                        Spacer()
+                    }
                 }
             }
             .frame(width: 200)
