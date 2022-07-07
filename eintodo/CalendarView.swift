@@ -93,6 +93,7 @@ struct CalendarView: View{
                     }
                 }
                 //Keyboard-Shortcut
+                /*
                 Group{
                     Button("Left arrow"){
                         let comp = Calendar.current.dateComponents([.day], from: global.selectedDate)
@@ -128,7 +129,7 @@ struct CalendarView: View{
                         global.selectedDate = global.selectedDate.addingTimeInterval(60*60*24*7)
                     }.keyboardShortcut(KeyEquivalent.downArrow, modifiers: [])
                 }.opacity(0)
-                
+                */
                 Spacer()
             }
             .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)

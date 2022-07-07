@@ -83,8 +83,10 @@ struct SubToDoListRow: View{
         if model.status != .delete{
             HStack{
                 Button(action: {
-                    model.completed.toggle()
-                    model.status = .update
+                    withAnimation{
+                        model.completed.toggle()
+                        model.status = .update
+                    }
                 }, label: {
                     Image(systemName: model.completed ? "checkmark.circle" : "circle")
                         .resizable().scaledToFit()
