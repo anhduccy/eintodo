@@ -33,6 +33,21 @@ struct CalendarView: View{
                     Text(CalendarDate.getMonth(input: selectedMonth)).bold()
                         .font(.title)
                     Spacer()
+                    
+                    Button(action: {
+                        global.selectedDate = Date()
+                        selectedMonth = CalendarDate.getCurrentMonth()
+                    }, label: {
+                        ZStack{
+                            Circle().fill(.blue).opacity(0.1)
+                            Image(systemName: "\(CalendarDate.getCurrentDay()).circle")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15)
+                                .foregroundColor(.blue)
+                        }.frame(width: 26, height: 26)
+                    }).buttonStyle(.plain)
+                    
                     MonthButton(systemName: "chevron.left", month: $selectedMonth){
                         selectedMonth-=1
                     }
@@ -115,14 +130,6 @@ struct CalendarView: View{
                 }.opacity(0)
                 
                 Spacer()
-                HStack{
-                    Spacer()
-                    Button("Heute"){
-                        global.selectedDate = Date()
-                        selectedMonth = CalendarDate.getCurrentMonth()
-                    }.buttonStyle(.plain)
-                        .foregroundColor(.blue)
-                }
             }
             .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
             .padding()
@@ -144,6 +151,11 @@ class CalendarDate{
     }
     
     static let calendar = Calendar.current
+    
+    static func getCurrentDay(date: Date = Date())->Int{
+        let components = calendar.dateComponents([.day], from: date)
+        return components.day!
+    }
     
     ///Return the current year as an int value
     static func getCurrentYear(date: Date = Date())->Int{

@@ -58,7 +58,7 @@ struct ToDoListView: View {
                             }.frame(width: 130, height: 20)
                         }).buttonStyle(.plain)
                             .sheet(isPresented: $showToDoEditView){
-                                ToDoEditView(global: global, isPresented: $showToDoEditView, type: .add, todo: ToDo())
+                                ToDoEditView(global: global, isPresented: $showToDoEditView, listType: type, editViewType: .add, todo: ToDo())
                             }
                             .keyboardShortcut("n", modifiers: [.command])
                         
@@ -280,7 +280,7 @@ struct ToDoItemRow: View{
                     }
             }).buttonStyle(.plain)
                 .sheet(isPresented: $showToDoEditView){
-                    ToDoEditView(global: global, isPresented: $showToDoEditView, type: .edit, todo: todo)
+                    ToDoEditView(global: global, isPresented: $showToDoEditView, listType: type, editViewType: .edit, todo: todo)
                 }
             
             HStack(spacing: 15){

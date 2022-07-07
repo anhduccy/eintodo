@@ -11,9 +11,9 @@ import SwiftUI
 import RealmSwift
 
 struct ToDoEditView: View{
-    init(global: Global, isPresented: Binding<Bool>, type: EditViewType, todo: ToDo){
+    init(global: Global, isPresented: Binding<Bool>, listType: ToDoListType, editViewType: EditViewType, todo: ToDo){
         _isPresented = isPresented
-        self.type = type
+        self.type = editViewType
         self.todo = todo
         if todo.title != ""{
             _model = StateObject(wrappedValue: ToDoModel().transferToLayer(todo: todo))
@@ -21,6 +21,9 @@ struct ToDoEditView: View{
             //Automatic list assignment when a new to-do is created
             let model = ToDoModel()
             model.list = global.selectedList.title == "" ? realmEnv.objects(ToDoList.self).first! : global.selectedList
+            if listType == .date{
+                model.deadline = global.selectedDate
+            }
             _model = StateObject(wrappedValue: model)
         }
     }
