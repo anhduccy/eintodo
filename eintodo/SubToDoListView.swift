@@ -86,7 +86,7 @@ struct SubToDoListRow: View{
                     model.completed.toggle()
                     model.status = .update
                 }, label: {
-                    Image(systemName: model.completed ? "checkmark.circle.fill" : "circle")
+                    Image(systemName: model.completed ? "checkmark.circle" : "circle")
                         .resizable().scaledToFit()
                         .frame(width: 15)
                         .foregroundColor(model.completed ? todo.list.first?.color.color : .gray)

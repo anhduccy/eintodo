@@ -25,6 +25,8 @@ struct ToDoListView: View {
     @State var showToDoEditView: Bool = false
     
     let windowSize: CGFloat = 400
+    
+    @State var onHoverAddButton: Bool = false
         
     var body: some View {
         ZStack(alignment: .bottomTrailing){
@@ -127,7 +129,7 @@ struct ToDoListView: View {
                 ZStack{
                     Circle().fill(type == .list ? global.selectedList.color.color : .blue)
                         .frame(width: 39, height: 39)
-                        .shadow(color: type == .list ? global.selectedList.color.color : .blue, radius: 2)
+                        .shadow(color: onHoverAddButton ? (type == .list ? global.selectedList.color.color : .blue) : .gray, radius: 2)
                     Image(systemName: "plus.circle.fill")
                         .resizable()
                         .scaledToFit()
@@ -139,6 +141,11 @@ struct ToDoListView: View {
                     ToDoEditView(global: global, isPresented: $showToDoEditView, listType: type, editViewType: .add, todo: ToDo())
                 }
                 .keyboardShortcut("n", modifiers: [.command])
+                .onHover{ over in
+                    withAnimation{
+                        onHoverAddButton = over
+                    }
+                }
         }
         .padding()
             .toolbar{
@@ -257,21 +264,22 @@ struct ToDoItemRow: View{
             }, label: {
                 RoundedRectangle(cornerRadius: 7.5)
                     .fill(appearance == .dark ? ColorPalette.cardDarkmode : ColorPalette.cardLightmode)
-                    .shadow(color: onHover ? (type == .list ? todo.list.first!.color.color : .blue) : .gray, radius: onHover ? 2 : 1)
+                    .shadow(color: onHover ? (type == .list ? (todo.list.first?.color.color ?? .blue) : .blue) : .gray, radius: onHover ? 2 : 1)
                     .onDrag{
                         NSItemProvider(object: "\(todo._id)" as NSString)
                     } preview: {
                         ZStack{
-                            RoundedRectangle(cornerRadius: 7.5)
-                                .fill(.blue)
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(todo.list.first?.color.color ?? .blue)
                             HStack{
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.white)
                                 Spacer()
                             }
-                            .padding()
+                            .padding(.leading, 7.5)
+                            .padding(5)
                         }
-                        .frame(width: 120, height: 30)
+                        .frame(width: 90, height: 30)
                     }
             }).buttonStyle(.plain)
                 .sheet(isPresented: $showToDoEditView){
