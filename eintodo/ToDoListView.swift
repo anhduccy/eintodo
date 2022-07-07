@@ -27,123 +27,118 @@ struct ToDoListView: View {
     let windowSize: CGFloat = 400
         
     var body: some View {
-        VStack(spacing: 10){
-            //Navigation Header
-            VStack(spacing: 0){
-                HStack(spacing: 10){
-                    Text(headline())
-                        .font(.largeTitle.weight(.bold))
-                        .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
-                    Spacer()
-                    
-                    HStack(spacing: 5){
-                        Button(action: {
-                            showToDoEditView.toggle()
-                        }, label: {
-                            ZStack{
-                                RoundedRectangle(cornerRadius: 100)
-                                    .stroke(type == .list ? global.selectedList.color.color : .blue, lineWidth: 1)
-                                HStack{
-                                    Spacer()
-                                    Text("To-Do hinzufügen")
-                                        .font(.system(size: 10).weight(.semibold))
-                                        .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                                    Spacer()
-                                    Image(systemName: "plus.circle.fill")
+        ZStack(alignment: .bottomTrailing){
+            VStack(spacing: 10){
+                //Navigation Header
+                VStack(spacing: 0){
+                    HStack(spacing: 10){
+                        Text(headline())
+                            .font(.largeTitle.weight(.bold))
+                            .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
+                        Spacer()
+                        
+                        HStack(spacing: 5){
+                            if type == .list{
+                                Button(action: {
+                                    showToDoListEditView.toggle()
+                                }, label: {
+                                    Image(systemName: "info.circle")
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 20)
                                         .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                                }
-                            }.frame(width: 130, height: 20)
-                        }).buttonStyle(.plain)
-                            .sheet(isPresented: $showToDoEditView){
-                                ToDoEditView(global: global, isPresented: $showToDoEditView, listType: type, editViewType: .add, todo: ToDo())
+                                }).buttonStyle(.plain)
+                                    .sheet(isPresented: $showToDoListEditView){
+                                        ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
+                                    }
                             }
-                            .keyboardShortcut("n", modifiers: [.command])
+                        }
                         
-                        if type == .list{
-                            Button(action: {
-                                showToDoListEditView.toggle()
-                            }, label: {
-                                Image(systemName: "info.circle")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20)
+                        if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
+                            if calculateProgress() != 1 {
+                                //Progress-Circle
+                                    ZStack{
+                                        Circle()
+                                            .stroke(lineWidth: 5)
+                                            .opacity(0.2)
+                                        Circle()
+                                            .trim(from: 0.0, to: calculateProgress())
+                                            .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                                            .rotationEffect(Angle(degrees: 270))
+                                    }
+                                    .frame(width: 25, height: 25)
                                     .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                            }).buttonStyle(.plain)
-                                .sheet(isPresented: $showToDoListEditView){
-                                    ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
-                                }
+                            }
                         }
                     }
-                    
-                    if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
-                        if calculateProgress() != 1 {
-                            //Progress-Circle
-                                ZStack{
-                                    Circle()
-                                        .stroke(lineWidth: 5)
-                                        .opacity(0.2)
-                                    Circle()
-                                        .trim(from: 0.0, to: calculateProgress())
-                                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                                        .rotationEffect(Angle(degrees: 270))
-                                }
-                                .frame(width: 25, height: 25)
-                                .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                    if type == .list{
+                        LeftText(text: global.selectedList.notes)
+                            .foregroundColor(.gray)
+                    } else if type == .all{
+                        LeftText(text: "Alle Erinnerungen auf einem Blick")
+                            .foregroundColor(.gray)
+                    }
+                }
+                
+                //ListView
+                VStack{
+                    if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && !global.showCompletedToDos) && returnDataSet(type: type, showCompletedToDos: false).isEmpty{
+                        VStack{
+                            Spacer()
+                            HStack{
+                                Spacer()
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                                Text("Du hast alle Erinnerungen erledigt")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.75)
+                                Spacer()
+                            }
+                            Spacer()
+                        }
+                    } else if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && global.showCompletedToDos) || !returnDataSet(type: type, showCompletedToDos: false).isEmpty{
+                        ScrollView(.vertical, showsIndicators: false){
+                            ForEach(returnDataSet(type: type, showCompletedToDos: global.showCompletedToDos), id: \.self){ todo in
+                                ToDoItemRow(todo: todo, type: type)
+                            }
+                            .padding(.top, 2.5)
+                            .padding(.leading, 5)
+                            .padding(.trailing, 5)
+                        }
+                    } else {
+                        VStack{
+                            Spacer()
+                            HStack{
+                                Spacer()
+                                Text("Keine Erinnerungen vorhanden")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.75)
+                                Spacer()
+                            }
+                            Spacer()
                         }
                     }
                 }
-                if type == .list{
-                    LeftText(text: global.selectedList.notes)
-                        .foregroundColor(.gray)
-                } else if type == .all{
-                    LeftText(text: "Alle Erinnerungen auf einem Blick")
-                        .foregroundColor(.gray)
-                }
+                Spacer()
             }
-            
-            //ListView
-            VStack{
-                if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && !global.showCompletedToDos) && returnDataSet(type: type, showCompletedToDos: false).isEmpty{
-                    VStack{
-                        Spacer()
-                        HStack{
-                            Spacer()
-                            Image(systemName: "checkmark")
-                                .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                            Text("Du hast alle Erinnerungen erledigt")
-                                .foregroundColor(.gray)
-                                .opacity(0.75)
-                            Spacer()
-                        }
-                        Spacer()
-                    }
-                } else if (!returnDataSet(type: type, showCompletedToDos: true).isEmpty && global.showCompletedToDos) || !returnDataSet(type: type, showCompletedToDos: false).isEmpty{
-                    ScrollView(.vertical, showsIndicators: false){
-                        ForEach(returnDataSet(type: type, showCompletedToDos: global.showCompletedToDos), id: \.self){ todo in
-                            ToDoItemRow(todo: todo, type: type)
-                        }
-                        .padding(.top, 2.5)
-                        .padding(.leading, 5)
-                        .padding(.trailing, 5)
-                    }
-                } else {
-                    VStack{
-                        Spacer()
-                        HStack{
-                            Spacer()
-                            Text("Keine Erinnerungen vorhanden")
-                                .foregroundColor(.gray)
-                                .opacity(0.75)
-                            Spacer()
-                        }
-                        Spacer()
-                    }
+            Button(action: {
+                showToDoEditView.toggle()
+            }, label: {
+                ZStack{
+                    Circle().fill(type == .list ? global.selectedList.color.color : .blue)
+                        .frame(width: 39, height: 39)
+                        .shadow(color: type == .list ? global.selectedList.color.color : .blue, radius: 2)
+                    Image(systemName: "plus.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40)
+                        .foregroundColor(.white)
                 }
-            }
-            Spacer()
+            }).buttonStyle(.plain)
+                .sheet(isPresented: $showToDoEditView){
+                    ToDoEditView(global: global, isPresented: $showToDoEditView, listType: type, editViewType: .add, todo: ToDo())
+                }
+                .keyboardShortcut("n", modifiers: [.command])
         }
         .padding()
             .toolbar{
@@ -262,7 +257,7 @@ struct ToDoItemRow: View{
             }, label: {
                 RoundedRectangle(cornerRadius: 7.5)
                     .fill(appearance == .dark ? ColorPalette.cardDarkmode : ColorPalette.cardLightmode)
-                    .shadow(color: onHover ? (type == .list ? todo.list.first!.color.color : .blue) : .gray, radius: 1)
+                    .shadow(color: onHover ? (type == .list ? todo.list.first!.color.color : .blue) : .gray, radius: onHover ? 2 : 1)
                     .onDrag{
                         NSItemProvider(object: "\(todo._id)" as NSString)
                     } preview: {
