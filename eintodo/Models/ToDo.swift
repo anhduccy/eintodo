@@ -94,10 +94,20 @@ class ToDo: Object, ObjectKeyIdentifiable{
     }
     ///Delete a to-do from Realm/MongoDB
     static func delete(todo: ToDo){
-        try! realmEnv.write{
-            NotificationCenter.deleteToDo(id: "\(todo._id)")
-            realmEnv.delete(realmEnv.objects(ToDo.self).filter("_id = %@", todo._id))
+        if realmEnv.isInWriteTransaction{
+            runDelete(todo: todo)
+        } else {
+            try! realmEnv.write{
+               runDelete(todo: todo)
+            }
         }
+    }
+    static func runDelete(todo: ToDo){
+        for subToDo in todo.subToDos{
+            SubToDo.delete(subToDo: subToDo)
+        }
+        NotificationCenter.deleteToDo(id: "\(todo._id)")
+        realmEnv.delete(realmEnv.objects(ToDo.self).filter("_id = %@", todo._id))
     }
 }
 

@@ -38,9 +38,16 @@ class SubToDo: Object, ObjectKeyIdentifiable{
     }
     ///Delete a sub to-do from Realm/MongoDB
     static func delete(subToDo: SubToDo){
-        try! realmEnv.write{
-            realmEnv.delete(realmEnv.objects(SubToDo.self).filter("_id = %@", subToDo._id))
+        if realmEnv.isInWriteTransaction{
+            runDelete(subToDo: subToDo)
+        } else {
+            try! realmEnv.write{
+                runDelete(subToDo: subToDo)
+            }
         }
+    }
+    static func runDelete(subToDo: SubToDo){
+        realmEnv.delete(realmEnv.objects(SubToDo.self).filter("_id = %@", subToDo._id))
     }
 }
 

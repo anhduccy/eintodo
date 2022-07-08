@@ -63,8 +63,12 @@ class ToDoList: Object, ObjectKeyIdentifiable{
     }
     ///Delete a to-do-list from Realm/MongoDB
     static func delete(list: ToDoList){
+        let realmList = realmEnv.objects(ToDoList.self).filter("_id == %@", list._id).first!
         try! realmEnv.write{
-            realmEnv.delete(realmEnv.objects(ToDoList.self).filter(NSPredicate(format: "_id == %@", list._id)))
+            for todo in realmList.todos{
+                ToDo.delete(todo: todo)
+            }
+            realmEnv.delete(realmList)
         }
     }
 }

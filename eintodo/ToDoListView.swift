@@ -151,9 +151,7 @@ struct ToDoListView: View {
             .toolbar{
                 ToolbarItemGroup(placement: .primaryAction){
                     Button(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden"){
-                        withAnimation{
                             global.showCompletedToDos.toggle()
-                        }
                     }
                 }
             }
