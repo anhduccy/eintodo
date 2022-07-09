@@ -34,6 +34,7 @@ struct SubToDoListView: View{
                         .frame(width: 15)
                         .foregroundColor(todo.list.first?.color.color ?? .blue)
                 }).buttonStyle(.plain)
+                    .disabled(title == "")
             }
             VStack(spacing: 5){
                 ForEach(subToDosLayerStorage.indices, id: \.self){ i in
@@ -73,11 +74,15 @@ struct SubToDoListRow: View{
         _storage = storage
         self.todo = todo
         self.model = subToDo
+        self.title_storage = subToDo.title
     }
     
     @Binding var storage: [SubToDoModel]
     @ObservedRealmObject var todo: ToDo
     @ObservedObject var model: SubToDoModel
+    
+    @State var showUpdateErrorAlert: Bool = false
+    let title_storage: String
     
     var body: some View{
         if model.status != .delete{
@@ -97,8 +102,12 @@ struct SubToDoListRow: View{
                     .disabled(model.status == .add)
                 
                 TextField("Untergeordnete Erinnerungen", text: $model.title, onEditingChanged: { _ in
-                    if model.status != .add{
-                        model.status = .update
+                    if model.title == ""{
+                        model.status = .delete
+                    } else {
+                        if model.status != .add{
+                            model.status = .update
+                        }
                     }
                 })
                     .textFieldStyle(.plain)

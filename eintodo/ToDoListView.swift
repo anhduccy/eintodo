@@ -298,7 +298,11 @@ struct ToDoItemRow: View{
                                     .foregroundColor(.red)
                             }
                             TextField("", text: $title, onEditingChanged: { _ in
-                                $todo.title.wrappedValue = title
+                                if title == ""{
+                                    ToDo.delete(todo: todo)
+                                } else {
+                                    $todo.title.wrappedValue = title
+                                }
                             })
                                 .font(.body.bold())
                                 .textFieldStyle(.plain)
@@ -359,8 +363,9 @@ struct ToDoItemRowSubToDoRow: View{
         self.subToDo = subToDo
         _title = State(initialValue: subToDo.title)
     }
-    @State var title: String
     @ObservedRealmObject var subToDo: SubToDo
+    
+    @State var title: String
     
     var body: some View{
         HStack(spacing: 5){
@@ -373,7 +378,11 @@ struct ToDoItemRowSubToDoRow: View{
                     .foregroundColor(subToDo.todo.first?.list.first?.color.color ?? .blue)
             }).buttonStyle(.plain)
             TextField("Titel", text: $title, onEditingChanged: { _ in
+                if title == ""{
+                    SubToDo.delete(subToDo: subToDo)
+                } else {
                     $subToDo.title.wrappedValue = title
+                }
                   })
                 .textFieldStyle(.plain)
                 .foregroundColor(.gray)
