@@ -14,6 +14,7 @@ struct SettingsView: View {
         let timeStr = UserDefaults.standard.string(forKey: "deadlineTime")
         if timeStr == nil {
             UserDefaults.standard.set("09:00", forKey: "deadlineTime")
+            timeStr = "09:00"
         }
         let df = DateFormatter()
         df.dateFormat = "DD-MM-YYYY"

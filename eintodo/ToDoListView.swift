@@ -33,52 +33,63 @@ struct ToDoListView: View {
             VStack(spacing: 10){
                 //Navigation Header
                 VStack(spacing: 0){
-                    HStack(spacing: 10){
-                        Text(headline())
-                            .font(.largeTitle.weight(.bold))
-                            .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
-                        Spacer()
-                        
-                        HStack(spacing: 5){
-                            if type == .list{
-                                Button(action: {
-                                    showToDoListEditView.toggle()
-                                }, label: {
-                                    Image(systemName: "info.circle")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 20)
+                    VStack(spacing: 5){
+                        HStack(spacing: 10){
+                            Text(headline())
+                                .font(.largeTitle.weight(.bold))
+                                .foregroundColor(type == .list ? global.selectedList.color.color : .primary)
+                            Spacer()
+                            
+                            HStack(spacing: 5){
+                                if type == .list{
+                                    Button(action: {
+                                        showToDoListEditView.toggle()
+                                    }, label: {
+                                        Image(systemName: "info.circle")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20)
+                                            .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
+                                    }).buttonStyle(.plain)
+                                        .sheet(isPresented: $showToDoListEditView){
+                                            ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
+                                        }
+                                }
+                            }
+                            
+                            if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
+                                if calculateProgress() != 1 {
+                                    //Progress-Circle
+                                        ZStack{
+                                            Circle()
+                                                .stroke(lineWidth: 5)
+                                                .opacity(0.2)
+                                            Circle()
+                                                .trim(from: 0.0, to: calculateProgress())
+                                                .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                                                .rotationEffect(Angle(degrees: 270))
+                                        }
+                                        .frame(width: 25, height: 25)
                                         .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                                }).buttonStyle(.plain)
-                                    .sheet(isPresented: $showToDoListEditView){
-                                        ToDoListEditView(isPresented: $showToDoListEditView, type: .edit, list: global.selectedList)
-                                    }
+                                }
                             }
                         }
-                        
-                        if !returnDataSet(type: type, showCompletedToDos: true).isEmpty{
-                            if calculateProgress() != 1 {
-                                //Progress-Circle
-                                    ZStack{
-                                        Circle()
-                                            .stroke(lineWidth: 5)
-                                            .opacity(0.2)
-                                        Circle()
-                                            .trim(from: 0.0, to: calculateProgress())
-                                            .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                                            .rotationEffect(Angle(degrees: 270))
-                                    }
-                                    .frame(width: 25, height: 25)
+                        HStack{
+                            if type == .list{
+                                LeftText(text: global.selectedList.notes)
+                                    .foregroundColor(.gray)
+                            } else {
+                                LeftText(text: "Alle Erinnerungen auf einem Blick")
+                                    .foregroundColor(.gray)
+                            }
+                            Spacer()
+                            Button(action: {
+                                global.showCompletedToDos.toggle()
+                            }, label: {
+                                Text(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden")
                                     .foregroundColor(type == .list ? global.selectedList.color.color : .blue)
-                            }
+                            }).buttonStyle(.plain)
                         }
-                    }
-                    if type == .list{
-                        LeftText(text: global.selectedList.notes)
-                            .foregroundColor(.gray)
-                    } else if type == .all{
-                        LeftText(text: "Alle Erinnerungen auf einem Blick")
-                            .foregroundColor(.gray)
                     }
                 }
                 
@@ -148,15 +159,8 @@ struct ToDoListView: View {
                 }
         }
         .padding()
-            .toolbar{
-                ToolbarItemGroup(placement: .primaryAction){
-                    Button(global.showCompletedToDos ? "Erledigte ausblenden" : "Erledigte einblenden"){
-                            global.showCompletedToDos.toggle()
-                    }
-                }
-            }
-            .background(appearance == .dark ? ColorPalette.backgroundDarkmode : ColorPalette.backgroundLightmode)
-            .frame(minWidth: windowSize)
+        .background(appearance == .dark ? ColorPalette.backgroundDarkmode : ColorPalette.backgroundLightmode)
+        .frame(minWidth: windowSize)
     }
     
     private func calculateProgress()->CGFloat{

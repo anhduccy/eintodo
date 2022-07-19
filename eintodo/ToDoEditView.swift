@@ -199,20 +199,15 @@ struct ToDoPriorityPickerPopover: View{
         VStack{
             Text("Priorität auswählen").font(.title2.bold())
             
+            Picker("", selection: $model.priority){
+                ForEach(ToDo.Priotity.allCases, id: \.self){ prio in
+                    Text(prio.text).tag(prio)
+                }
+            }
             #if os(macOS)
-            Picker("", selection: $model.priority){
-                ForEach(ToDo.Priotity.allCases, id: \.self){ prio in
-                    Text(prio.text).tag(prio)
-                }
-            }.pickerStyle(.radioGroup)
-            #endif
-            
-            #if os(iOS)
-            Picker("", selection: $model.priority){
-                ForEach(ToDo.Priotity.allCases, id: \.self){ prio in
-                    Text(prio.text).tag(prio)
-                }
-            }.pickerStyle(.menu)
+            .pickerStyle(.radioGroup)
+            #else
+            .pickerStyle(.menu)
             #endif
         }.padding()
     }

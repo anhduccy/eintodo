@@ -128,15 +128,8 @@
 		7971461F285E07C200596920 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7964DC50285E026900CB3975 /* ContentView.swift */,
-				798A7FE8286DB35E001139CD /* SettingsView.swift */,
-				797AC78B286232F2001C80F4 /* LoginView.swift */,
-				797AC78D28623721001C80F4 /* HomeView.swift */,
-				79714617285E040700596920 /* CalendarView.swift */,
-				7988628028762F0E00256186 /* SubToDo */,
-				798711AC285F324800050034 /* ToDo */,
-				798711AD285F325E00050034 /* ToDoList */,
-				7971461D285E044500596920 /* ViewLibrary.swift */,
+				79E5529F2886EF8F0076DAD7 /* iPad */,
+				79E5529E2886EF7A0076DAD7 /* Mac */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -176,6 +169,29 @@
 				7988627E28762EEA00256186 /* SubToDoListView.swift */,
 			);
 			name = SubToDo;
+			sourceTree = "<group>";
+		};
+		79E5529E2886EF7A0076DAD7 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				7964DC50285E026900CB3975 /* ContentView.swift */,
+				798A7FE8286DB35E001139CD /* SettingsView.swift */,
+				797AC78B286232F2001C80F4 /* LoginView.swift */,
+				797AC78D28623721001C80F4 /* HomeView.swift */,
+				79714617285E040700596920 /* CalendarView.swift */,
+				7988628028762F0E00256186 /* SubToDo */,
+				798711AC285F324800050034 /* ToDo */,
+				798711AD285F325E00050034 /* ToDoList */,
+				7971461D285E044500596920 /* ViewLibrary.swift */,
+			);
+			name = Mac;
+			sourceTree = "<group>";
+		};
+		79E5529F2886EF8F0076DAD7 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

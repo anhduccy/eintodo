@@ -85,7 +85,9 @@ struct HomeView: View {
                     }
                 }
             }
+            #if os(macOS)
             .frame(width: 200)
+            #endif
             .listStyle(.sidebar)
             .toolbar{
                 ToolbarItemGroup(placement: .automatic){
