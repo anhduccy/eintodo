@@ -55,9 +55,17 @@ struct SystemDatePicker: View{
             Text(title)
             Spacer()
             if date != Date.isNotActive{
+                #if os(macOS)
                 DatePicker("", selection: $date, displayedComponents: displayType())
                     .datePickerStyle(.stepperField)
                     .frame(width: 200)
+                #endif
+                
+                #if os(iOS)
+                DatePicker("", selection: $date, displayedComponents: displayType())
+                    .datePickerStyle(.automatic)
+                    .frame(width: 200)
+                #endif
             } else {
                 Text("Nicht aktiviert")
                     .foregroundColor(.gray)
