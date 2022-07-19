@@ -145,7 +145,7 @@ struct ToDoListView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 40)
-                        .foregroundColor(.white)
+                        .foregroundColor(appearance == .dark ? ColorPalette.cardDarkmode : ColorPalette.backgroundLightmode)
                 }
             }).buttonStyle(.plain)
                 .sheet(isPresented: $showToDoEditView){

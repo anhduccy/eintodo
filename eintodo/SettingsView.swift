@@ -11,7 +11,7 @@ import RealmSwift
 struct SettingsView: View {
     init(isPresented: Binding<Bool>){
         _isPresented = isPresented
-        let timeStr = UserDefaults.standard.string(forKey: "deadlineTime")
+        var timeStr = UserDefaults.standard.string(forKey: "deadlineTime")
         if timeStr == nil {
             UserDefaults.standard.set("09:00", forKey: "deadlineTime")
             timeStr = "09:00"
