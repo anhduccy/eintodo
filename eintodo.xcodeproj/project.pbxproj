@@ -60,6 +60,8 @@
 		7988627E28762EEA00256186 /* SubToDoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubToDoListView.swift; sourceTree = "<group>"; };
 		798A7FE8286DB35E001139CD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		79FAC55C285F9560005E4251 /* ToDoListCollectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListCollectionRow.swift; sourceTree = "<group>"; };
+		8F053C4C288C5832009AE56E /* secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = secrets.xcconfig; sourceTree = "<group>"; };
+		8F053C4E288C62FF009AE56E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		7964DC4D285E026900CB3975 /* eintodo */ = {
 			isa = PBXGroup;
 			children = (
+				8F053C4E288C62FF009AE56E /* Info.plist */,
 				7964DC4E285E026900CB3975 /* eintodoApp.swift */,
 				791A2F522860F0DE00B307AE /* Migrator.swift */,
 				7945E344286EF4290042F9CF /* Classes & Enums */,
@@ -113,6 +116,7 @@
 				7964DC52285E026A00CB3975 /* Assets.xcassets */,
 				7964DC57285E026A00CB3975 /* eintodo.entitlements */,
 				7964DC54285E026A00CB3975 /* Preview Content */,
+				8F053C4C288C5832009AE56E /* secrets.xcconfig */,
 			);
 			path = eintodo;
 			sourceTree = "<group>";
@@ -225,6 +229,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
@@ -415,6 +422,7 @@
 		};
 		7964DC5B285E026A00CB3975 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F053C4C288C5832009AE56E /* secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -431,6 +439,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = eintodo/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -454,6 +463,7 @@
 		};
 		7964DC5C285E026A00CB3975 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F053C4C288C5832009AE56E /* secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -470,6 +480,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = eintodo/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

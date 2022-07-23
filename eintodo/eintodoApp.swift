@@ -12,8 +12,17 @@ import Realm
 
 
 //Realm Setup
-let realmApp = RealmSwift.App(id: "***REMOVED***")
+let realmApp = RealmSwift.App(id: getKey())
 var realmEnv = try! Realm(configuration: .defaultConfiguration)
+
+func getKey() -> String {
+	let apiKey = Bundle.main.object(forInfoDictionaryKey: "Realm_Key") as? String
+	guard let key = apiKey, !key.isEmpty else {
+		print("could not load key!")
+		return ""
+	}
+	return key
+}
 
 @main
 struct eintodoApp: SwiftUI.App {
