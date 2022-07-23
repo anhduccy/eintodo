@@ -1,7 +1,7 @@
 #custom
 eintodo.xcodeproj/xcuserdata/
 eintodo.xcodeproj/project.xcworkspace/xcuserdata
-
+eintodo/secrets.xcconfig
 
 # Created by https://www.toptal.com/developers/gitignore/api/swift,xcode,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,xcode,macos
